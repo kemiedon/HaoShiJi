@@ -1,0 +1,45 @@
+{
+  "symptoms": {
+    "description": "食物中毒症狀相關關鍵字",
+    "keywords": [
+      "腹瀉",
+      "diarrhea",
+      "嘔吐",
+      "vomiting",
+      "腹痛",
+      "abdominal pain",
+      "噁心",
+      "nausea",
+      "發燒",
+      "fever",
+      "頭痛",
+      "headache",
+      "食物中毒",
+      "food poisoning",
+      "集體中毒",
+      "群聚感染"
+    ]
+  },
+  "high_risk_foods": {
+    "description": "高風險食品關鍵字",
+    "keywords": [
+      "生食",
+      "生魚片",
+      "sashimi",
+      "生蠔",
+      "oyster",
+      "未煮熟",
+      "undercooked",
+      "隔夜",
+      "leftover",
+      "過期",
+      "expired",
+      "發霉",
+      "moldy",
+      "變質",
+      "spoiled",
+      "腐敗",
+      "rotten"
+    ]
+  }
+}
