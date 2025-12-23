@@ -1,114 +1,65 @@
-"""
-places_client.py
-
-功能：
-- 使用 Google Places Text Search API 搜尋餐廳
-- 以「行政區 + 餐廳」為主搜尋策略
-- 在程式端進行 rating 篩選
-- 使用 Place Details API 取得評論（reviews）
-"""
-
 from typing import List, Dict, Any
-import os
 import requests
-from dotenv import load_dotenv
-
-# ====================
-# Environment
-# ====================
-load_dotenv()
 
 # ====================
 # API Endpoints
 # ====================
-PLACES_TEXT_SEARCH_URL = (
-    "https://maps.googleapis.com/maps/api/place/textsearch/json"
-)
+PLACES_TEXT_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+PLACES_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json"
 
-PLACES_DETAILS_URL = (
-    "https://maps.googleapis.com/maps/api/place/details/json"
-)
-
-# ====================
-# Exceptions
-# ====================
 class PlacesClientError(Exception):
-    """Base exception for Places client errors."""
-
-
-# ====================
-# Utilities
-# ====================
-def _get_api_key() -> str:
-    api_key = os.getenv("GOOGLE_PLACES_API_KEY")
-
-    if not api_key:
-        raise PlacesClientError(
-            "GOOGLE_PLACES_API_KEY not found in environment variables."
-        )
-    return api_key
-
+    """自定義錯誤類別，方便除錯"""
+    pass
 
 # ====================
 # Text Search
 # ====================
 def search_restaurants_by_text(
+    api_key: str,
     query: str,
     min_rating: float = 0.0,
     max_results: int = 20,
 ) -> List[Dict[str, Any]]:
     """
-    使用 Text Search 搜尋餐廳
-
-    Args:
-        query: 搜尋文字，例如「台北市 大安區 餐廳」
-        min_rating: 最低星等
-        max_results: 最多回傳筆數
-
-    Returns:
-        List[dict]: 餐廳資料清單
+    搜尋餐廳並依星等排序
     """
-    api_key = _get_api_key()
-
     params = {
         "query": query,
+        "type": "restaurant", # 強制指定搜尋餐廳
         "language": "zh-TW",
         "key": api_key,
     }
 
-    response = requests.get(
-        PLACES_TEXT_SEARCH_URL,
-        params=params,
-        timeout=10,
-    )
-
+    response = requests.get(PLACES_TEXT_SEARCH_URL, params=params, timeout=10)
+    
     if response.status_code != 200:
-        raise PlacesClientError(
-            f"Places API error HTTP {response.status_code}: {response.text}"
-        )
+        raise PlacesClientError(f"API 連線失敗: {response.status_code}")
 
     data = response.json()
-    places = data.get("results", [])
+    raw_places = data.get("results", [])
 
-    print(f"Text Search returned {len(places)} places (raw)")
+    # --- Python 排序邏輯 ---
+    # 1. 根據 rating 從高到低排序 (reverse=True)
+    sorted_places = sorted(
+        raw_places, 
+        key=lambda x: x.get("rating", 0), 
+        reverse=True
+    )
 
-    results: List[Dict[str, Any]] = []
-
-    for p in places:
+    # 2. 篩選星等並限制回傳筆數
+    results = []
+    for p in sorted_places:
         rating = p.get("rating", 0)
-        if rating < min_rating:
-            continue
-
-        results.append(
-            {
+        if rating >= min_rating:
+            results.append({
                 "place_id": p.get("place_id"),
                 "name": p.get("name"),
                 "rating": rating,
                 "user_ratings_total": p.get("user_ratings_total"),
                 "formatted_address": p.get("formatted_address"),
-            }
-        )
-
+            })
+        
+        # 達到目標筆數就收工
         if len(results) >= max_results:
             break
 
@@ -119,55 +70,26 @@ def search_restaurants_by_text(
 # Place Details (Reviews)
 # ====================
 def get_place_reviews(
+    api_key: str,
     place_id: str,
     language: str = "zh-TW",
-    max_reviews: int = 5,
 ) -> List[Dict[str, Any]]:
     """
-    使用 Place Details API 取得餐廳評論
-
-    Args:
-        place_id: Google place_id
-        language: 評論語言
-        max_reviews: 最多回傳幾則評論（Google 上限通常 5）
-
-    Returns:
-        List[dict]: 評論清單
+    取得餐廳的完整評論，供後續食安分析
     """
-    api_key = _get_api_key()
-
     params = {
         "place_id": place_id,
-        "fields": "reviews",
+        "fields": "reviews", # 只要評論，節省流量
         "language": language,
         "key": api_key,
     }
 
-    response = requests.get(
-        PLACES_DETAILS_URL,
-        params=params,
-        timeout=10,
-    )
-
+    response = requests.get(PLACES_DETAILS_URL, params=params, timeout=10)
+    
     if response.status_code != 200:
-        raise PlacesClientError(
-            f"Place Details API error HTTP {response.status_code}: {response.text}"
-        )
+        return [] # 出錯時回傳空清單，不讓主程式斷掉
 
     data = response.json()
     result = data.get("result", {})
-    reviews = result.get("reviews", [])
-
-    parsed_reviews: List[Dict[str, Any]] = []
-
-    for r in reviews[:max_reviews]:
-        parsed_reviews.append(
-            {
-                "author_name": r.get("author_name"),
-                "rating": r.get("rating"),
-                "text": r.get("text"),
-                "time": r.get("time"),
-            }
-        )
-
-    return parsed_reviews
+    # 這裡直接回傳完整 reviews 清單，包含完整 text
+    return result.get("reviews", [])
