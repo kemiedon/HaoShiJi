@@ -9,7 +9,14 @@ __pycache__/
 .env
 
 # Output data
+# 1. 先忽略整個 data 資料夾
 data/
+# 2. 但我們要把 data/raw/ 這個路徑排除在忽略名單外
+!data/raw/
+# 3. 指定我們要上傳的那個特定檔案
+!data/raw/places_with_reviews.json
+
+# 忽略其他的 json 和 csv
 *.json
 *.csv
 
