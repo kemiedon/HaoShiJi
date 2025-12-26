@@ -16,7 +16,12 @@ def main() -> None:
         return
 
     # 2. 設定搜尋參數
-    query = "台北市 大安區 餐廳"
+    city = input("請輸入你想搜尋的縣市（例如：台北市）：")
+    district = input("請輸入你想搜尋區域（例如：中正區）：")
+    location = input("請輸入你想搜尋的地點（例如：台北車站）：")
+    food_type = input("請輸入你想吃的類型（例如：拉麵 或是 餐廳）：")
+    query = f"{city} {district} {location} 附近的 {food_type}".strip()
+
     min_rating = 4.0
     max_results = 5  # MVP 版本：5 筆餐廳資料 
 
@@ -89,7 +94,6 @@ def main() -> None:
         json.dump(final_output, f, ensure_ascii=False, indent=2)
 
     print("-" * 40)
-    print(f"🎉 任務完成！格式已與計畫書比對一致。")
     print(f"📂 儲存至: {output_path}")
 
 if __name__ == "__main__":
