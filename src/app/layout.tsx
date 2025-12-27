@@ -7,6 +7,18 @@ export const metadata: Metadata = {
   viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
 };
 
+function Footer() {
+  return (
+    <footer className="mt-auto border-t border-primary/10 bg-card/50 backdrop-blur-sm">
+      <div className="w-full py-6 px-4 flex items-center justify-center">
+        <p className="text-center text-sm text-muted-foreground">
+          ©copyright 好食機製作團隊
+        </p>
+      </div>
+    </footer>
+  );
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -24,6 +36,7 @@ export default function RootLayout({
       <body className="antialiased">
         <div className="flex flex-col min-h-screen">
           {children}
+          <Footer />
         </div>
       </body>
     </html>
