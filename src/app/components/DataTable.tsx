@@ -16,7 +16,7 @@ import { getLevelColorClass, getLevelDescription } from '../lib/utils';
  * 餐廳資料表格元件
  * 展示搜尋結果和餐廳詳細資訊
  */
-export function DataTable() {
+export function DataTable({ onSearch }: { onSearch?: (address: string) => void }) {
   const {
     filters,
     results,
@@ -32,12 +32,20 @@ export function DataTable() {
   const onSearchClick = () => {
     updateSearchTerm(searchInput);
     handleSearch();
+    // 當搜尋時，傳遞搜尋地址給父元件
+    if (onSearch) {
+      onSearch(searchInput);
+    }
   };
 
   // 處理清除搜尋
   const onClearSearch = () => {
     setSearchInput('');
     clearSearch();
+    // 清除時重置地圖
+    if (onSearch) {
+      onSearch('');
+    }
   };
 
   // 根據搜尋狀態決定要顯示的內容

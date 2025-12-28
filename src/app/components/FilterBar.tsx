@@ -9,30 +9,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
-import { CITIES, AREAS, TAIWAN_LOCATIONS_DATABASE } from '../lib/constants';
+import { TAIWAN_LOCATIONS_DATABASE } from '../lib/constants';
 
 /**
  * 篩選條件物件型別
  */
 interface FilterBarProps {
-  filter1: string;
-  filter2: string;
   searchText: string;
-  onFilter1Change: (value: string) => void;
-  onFilter2Change: (value: string) => void;
   onSearchChange: (value: string) => void;
 }
 
 /**
  * 篩選欄元件
- * 提供城市、地區、縣市、鄉鎮市區、郵遞區號和搜尋功能
+ * 提供縣市、鄉鎮市區、郵遞區號和搜尋功能
  */
 export function FilterBar({
-  filter1,
-  filter2,
   searchText,
-  onFilter1Change,
-  onFilter2Change,
   onSearchChange,
 }: FilterBarProps) {
   const [county, setCounty] = useState('');
@@ -76,19 +68,12 @@ export function FilterBar({
   return (
     <nav className="sticky top-0 z-40 bg-background border-b border-primary/10 shadow-sm">
       <div className="px-3 md:px-4 py-3 md:py-4">
-        {/* 第一行：城市和地區選擇器 */}
+        {/* 搜尋輸入框 */}
         <div className="flex flex-col gap-2 md:gap-4 md:flex-row md:items-center mb-3 md:mb-0">
-          {/* 城市選擇器 */}
-          <CitySelector value={filter1} onChange={onFilter1Change} />
-
-          {/* 地區選擇器 */}
-          <AreaSelector value={filter2} onChange={onFilter2Change} />
-
-          {/* 搜尋輸入框 */}
           <SearchInput value={searchText} onChange={onSearchChange} />
         </div>
 
-        {/* 第二行：縣市、鄉鎮市區、郵遞區號選擇器 */}
+        {/* 縣市、鄉鎮市區、郵遞區號選擇器 */}
         <div className="flex flex-col gap-2 md:gap-4 md:flex-row md:items-center pt-3 md:pt-0 border-t md:border-t-0 border-primary/10">
           <div className="dropdown flex flex-col gap-2 md:gap-4 md:flex-row w-full md:w-auto">
             {/* 縣市選擇器 */}
@@ -143,56 +128,6 @@ export function FilterBar({
         </div>
       </div>
     </nav>
-  );
-}
-
-/**
- * 城市選擇器子元件
- */
-interface CitySelectorProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-function CitySelector({ value, onChange }: CitySelectorProps) {
-  return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full md:w-48 border border-primary/30 bg-card shadow-sm rounded-xl hover:border-primary/50 transition-colors">
-        <SelectValue placeholder="選擇城市" />
-      </SelectTrigger>
-      <SelectContent>
-        {CITIES.map((city) => (
-          <SelectItem key={city.value} value={city.value}>
-            {city.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  );
-}
-
-/**
- * 地區選擇器子元件
- */
-interface AreaSelectorProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-function AreaSelector({ value, onChange }: AreaSelectorProps) {
-  return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full md:w-48 border border-primary/30 bg-card shadow-sm rounded-xl hover:border-primary/50 transition-colors">
-        <SelectValue placeholder="選擇地區" />
-      </SelectTrigger>
-      <SelectContent>
-        {AREAS.map((area) => (
-          <SelectItem key={area.value} value={area.value}>
-            {area.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
   );
 }
 

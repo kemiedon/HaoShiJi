@@ -1,43 +1,95 @@
+import { useEffect, useRef, useState } from 'react';
+
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 /**
  * 地圖展示區塊
- * 顯示 Google Maps iframe
+ * 顯示 Google Maps 並根據搜尋地址更新位置
  */
-export function MapSection() {
+export function MapSection({ searchAddress }: { searchAddress?: string }) {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const geocoderRef = useRef<any>(null);
+  const markersRef = useRef<any[]>([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  // 初始化地圖
+  useEffect(() => {
+    if (!mapRef.current || mapLoaded) return;
+
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey) {
+      console.error('Google Maps API key is missing');
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+    
+    script.onload = () => {
+      // Initialize the map
+      if (mapRef.current && window.google) {
+        mapInstanceRef.current = new window.google.maps.Map(mapRef.current, {
+          center: { lat: 25.033964, lng: 121.564468 }, // Taipei 101 coordinates
+          zoom: 12,
+        });
+        
+        // Initialize geocoder
+        geocoderRef.current = new window.google.maps.Geocoder();
+        setMapLoaded(true);
+      }
+    };
+
+    document.head.appendChild(script);
+
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, [mapLoaded]);
+
+  // 當搜尋地址改變時，更新地圖位置
+  useEffect(() => {
+    if (!mapLoaded || !searchAddress || !geocoderRef.current || !mapInstanceRef.current) return;
+
+    // 清除之前的標記
+    markersRef.current.forEach((marker) => {
+      marker.setMap(null);
+    });
+    markersRef.current = [];
+
+    geocoderRef.current.geocode({ address: searchAddress }, (results: any, status: any) => {
+      if (status === 'OK' && results.length > 0) {
+        const location = results[0].geometry.location;
+        mapInstanceRef.current.setCenter(location);
+        mapInstanceRef.current.setZoom(15);
+
+        // 在地圖上添加標記
+        const marker = new window.google.maps.Marker({
+          position: location,
+          map: mapInstanceRef.current,
+          title: searchAddress,
+        });
+        markersRef.current.push(marker);
+      } else {
+        console.error('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }, [searchAddress, mapLoaded]);
+
   return (
     <div className="px-3 md:px-4 py-3 md:py-4 h-auto md:h-[500px] flex flex-col">
       <h2 className="text-center mb-3 md:mb-4 text-sm md:text-base lg:text-lg text-primary font-semibold">
         餐廳位置地圖
       </h2>
-      <MapContainer />
+      <div ref={mapRef} style={{ width: '100%', height: '400px' }} />
     </div>
-  );
-}
-
-/**
- * 地圖容器子元件
- */
-function MapContainer() {
-  return (
-    <div className="flex-1 bg-card rounded-xl shadow-md overflow-hidden border border-primary/10 min-h-[300px] md:min-h-auto">
-      <MapIframe />
-    </div>
-  );
-}
-
-/**
- * Google Maps iframe 子元件
- */
-function MapIframe() {
-  return (
-    <iframe
-      title="Google Maps - 餐廳位置"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215294721433!2d-73.98565042346486!3d40.75797083538802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1703615873927!5m2!1sen!2sus"
-      width="100%"
-      height="100%"
-      style={{ border: 0 }}
-      allowFullScreen
-      loading="lazy"
-      referrerPolicy="no-referrer-when-downgrade"
-    />
   );
 }

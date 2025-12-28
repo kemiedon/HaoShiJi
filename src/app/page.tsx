@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Header } from './components/Header';
 import { FilterBar } from './components/FilterBar';
 import { DataTable } from './components/DataTable';
@@ -10,13 +11,15 @@ import { MapSection } from './components/MapSection';
  * 展示整個應用程式的佈局和結構
  */
 export default function Page() {
+  const [searchAddress, setSearchAddress] = useState('');
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* 頁面標題區域 */}
       <PageHeader />
 
       {/* 主要內容區域 */}
-      <PageContent />
+      <PageContent searchAddress={searchAddress} onSearchAddressChange={setSearchAddress} />
 
       {/* 底部間距 */}
       <PageFooter />
@@ -38,18 +41,23 @@ function PageHeader() {
 /**
  * 頁面主要內容區塊
  */
-function PageContent() {
+interface PageContentProps {
+  searchAddress: string;
+  onSearchAddressChange: (address: string) => void;
+}
+
+function PageContent({ searchAddress, onSearchAddressChange }: PageContentProps) {
   return (
     <div className="w-full max-w-full px-2 md:px-4 lg:px-6 py-4 md:py-6 lg:py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8 auto-rows-max">
         {/* 左側：資料表格 */}
         <ContentSection>
-          <DataTable />
+          <DataTable onSearch={onSearchAddressChange} />
         </ContentSection>
 
         {/* 右側：地圖 */}
         <ContentSection>
-          <MapSection />
+          <MapSection searchAddress={searchAddress} />
         </ContentSection>
       </div>
     </div>

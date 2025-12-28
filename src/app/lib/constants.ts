@@ -2,32 +2,8 @@
  * 常數定義
  */
 
-export const CITIES = [
-  { value: 'taipei', label: '台北' },
-  { value: 'taichung', label: '台中' },
-  { value: 'kaohsiung', label: '高雄' },
-  { value: 'other', label: '其他' },
-];
+import foodPoisoningKeywords from '../../data/keywords/food_poisoning_keywords.json';
 
-export const AREAS = [
-  { value: 'downtown', label: '市中心' },
-  { value: 'suburb', label: '郊區' },
-  { value: 'mall', label: '商場' },
-];
-
-/**
- * 台灣縣市和鄉鎮市區資料
- */
-export const TAIWAN_LOCATIONS_DATABASE = {
-  '基隆市': {'仁愛區': '200', '信義區': '201', '中正區': '202', '中山區': '203', '安樂區': '204', '暖暖區': '205', '七堵區': '206'},
-  '臺北市': {'中正區': '100', '大同區': '103', '中山區': '104', '松山區': '105', '大安區': '106', '萬華區': '108', '信義區': '110', '士林區': '111', '北投區': '112', '內湖區': '114', '南港區': '115', '文山區': '116'},
-  '新北市': {
-    '萬里區': '207', '金山區': '208', '板橋區': '220', '汐止區': '221', '深坑區': '222', '石碇區': '223',
-    '瑞芳區': '224', '平溪區': '226', '雙溪區': '227', '貢寮區': '228', '新店區': '231', '坪林區': '232',
-    '烏來區': '233', '永和區': '234', '中和區': '235', '土城區': '236', '三峽區': '237', '樹林區': '238',
-    '鶯歌區': '239', '三重區': '241', '新莊區': '242', '泰山區': '243', '林口區': '244', '蘆洲區': '247',
-    '五股區': '248', '八里區': '249', '淡水區': '251', '三芝區': '252', '石門區': '253'
-  },
   '宜蘭縣': {
     '宜蘭市': '260', '頭城鎮': '261', '礁溪鄉': '262', '壯圍鄉': '263', '員山鄉': '264', '羅東鎮': '265',
     '三星鄉': '266', '大同鄉': '267', '五結鄉': '268', '冬山鄉': '269', '蘇澳鎮': '270', '南澳鄉': '272',
@@ -123,12 +99,16 @@ export const TAIWAN_LOCATIONS_DATABASE = {
 } as const;
 
 // 模擬搜尋結果的餐廳資料
+const keywordsMap = new Map(
+  foodPoisoningKeywords.restaurants.map((item: any) => [item.id, item.keywords])
+);
+
 export const MOCK_RESTAURANTS = [
   {
     id: 1,
     name: '美味漢堡店',
     level: 1,
-    keywords: '美式, 漢堡, 快餐',
+    keywords: keywordsMap.get(1),
     city: 'taipei',
     area: 'downtown',
   },
@@ -136,7 +116,7 @@ export const MOCK_RESTAURANTS = [
     id: 2,
     name: '老王牛肉麵',
     level: 3,
-    keywords: '台式, 麵食, 傳統',
+    keywords: keywordsMap.get(2),
     city: 'taipei',
     area: 'suburb',
   },
@@ -144,7 +124,7 @@ export const MOCK_RESTAURANTS = [
     id: 3,
     name: '極鮮壽司',
     level: 5,
-    keywords: '日式, 生魚片, 海鮮',
+    keywords: keywordsMap.get(3),
     city: 'taichung',
     area: 'mall',
   },
@@ -152,7 +132,7 @@ export const MOCK_RESTAURANTS = [
     id: 4,
     name: '快樂披薩',
     level: 2,
-    keywords: '義式, 披薩, 聚餐',
+    keywords: keywordsMap.get(4),
     city: 'kaohsiung',
     area: 'downtown',
   },
@@ -160,7 +140,7 @@ export const MOCK_RESTAURANTS = [
     id: 5,
     name: '川味麻辣鍋',
     level: 4,
-    keywords: '火鍋, 辣, 晚餐',
+    keywords: keywordsMap.get(5),
     city: 'taipei',
     area: 'mall',
   },
