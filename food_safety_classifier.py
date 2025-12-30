@@ -5,7 +5,8 @@ food_safety_classifier.py
 功能：
 1. 分析 Google Places 評論中的食安風險關鍵字
 2. 比對台北市政府餐飲衛生管理分級評核資料（僅限「優」等級）
-3. 輸出整合後的風險分級報告
+3. 比對食品稽查結果不合格資料
+4. 輸出整合後的風險分級報告
 
 使用方式：
     python food_safety_classifier.py
@@ -13,6 +14,7 @@ food_safety_classifier.py
 輸入檔案：
     - data/raw/places_with_reviews.json（爬蟲資料）
     - data/external/certified_restaurants.csv（官方評核資料）
+    - data/external/food_business_data.json（稽查資料）
 
 輸出檔案：
     - data/processed/safety_classified.json
@@ -33,7 +35,8 @@ class SafetyLevel(Enum):
     HIGH_RISK = "高風險"
     MEDIUM_RISK = "中風險"
     LOW_RISK = "無/低風險"
-    CERTIFIED = "官方認證"
+    CERTIFIED = "官方認證優"
+    INSPECTION = "稽核未通過"
 
 
 # 1. 負面症狀、感官異狀與物理危害（吃了出問題 / User 負面體感回饋）
@@ -126,6 +129,36 @@ def load_certified_restaurants(csv_path: str) -> Dict[str, Dict[str, str]]:
     print(f"  評核「良」: {good_count} 筆（已排除）")
     
     return certified
+
+
+def load_inspection_failed(json_path: str) -> Dict[str, Dict[str, str]]:
+    """
+    載入食品稽查不合格資料
+
+    Args:
+        json_path: JSON 檔案路徑
+
+    Returns:
+        以「業者名稱」為 key 的字典
+    """
+    failed = {}
+
+    if not os.path.exists(json_path):
+        return failed
+
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    for item in data:
+        company_name = item.get("company_name", "").strip()
+        if company_name:
+            failed[company_name] = {
+                "address": item.get("address", ""),
+                "registration_number": item.get("registration_number", ""),
+            }
+
+    print(f"  稽查不合格: {len(failed)} 筆（已納入）")
+    return failed
 
 
 def fuzzy_match_certification(
@@ -246,22 +279,27 @@ def classify_review(review_text: str) -> Dict[str, Any]:
 
 def classify_restaurant(
     restaurant: Dict[str, Any],
-    certified_data: Dict[str, Dict[str, str]]
+    certified_data: Dict[str, Dict[str, str]],
+    inspection_failed_data: Dict[str, Dict[str, str]]
 ) -> Dict[str, Any]:
     """
-    分析單家餐廳的整體食安風險（整合官方認證）
-    
+    分析單家餐廳的整體食安風險（整合官方認證與稽查資料）
+
     Args:
         restaurant: 餐廳資料（含評論）
         certified_data: 官方認證資料字典
-    
+        inspection_failed_data: 稽查不合格資料字典
+
     Returns:
         原餐廳資料 + safety_analysis 欄位
     """
     reviews = restaurant.get("reviews", [])
     name = restaurant.get("name", "")
     address = restaurant.get("formatted_address", "")
-    
+
+    # 檢查稽查不合格名單
+    inspection_failed = fuzzy_match_certification(name, address, inspection_failed_data)
+
     # 檢查官方認證
     certification = fuzzy_match_certification(name, address, certified_data)
     
@@ -290,16 +328,18 @@ def classify_restaurant(
         all_matched_keywords.extend(result["matched_keywords"])
     
     # 判定風險等級
-    # 優先級：症狀 > 官方認證 > 生食 > 低風險
+    # 優先級：症狀 > 稽查不合格 > 官方認證 > 生食 > 低風險
     if symptom_count > 0:
         level = SafetyLevel.HIGH_RISK
+    elif inspection_failed:
+        level = SafetyLevel.INSPECTION
     elif certification:
         level = SafetyLevel.CERTIFIED
     elif raw_food_count > 0:
         level = SafetyLevel.MEDIUM_RISK
     else:
         level = SafetyLevel.LOW_RISK
-    
+
     # 組裝分析結果
     safety_analysis = {
         "level": level.value,
@@ -309,8 +349,16 @@ def classify_restaurant(
         "total_reviews_analyzed": len(reviews),
         "flagged_reviews": flagged_reviews if flagged_reviews else None,
         "official_certification": None,
+        "inspection_status": None,
     }
-    
+
+    if inspection_failed:
+        safety_analysis["inspection_status"] = {
+            "status": "稽查不合格",
+            "registration_number": inspection_failed["registration_number"],
+            "failed_address": inspection_failed["address"],
+        }
+
     if certification:
         safety_analysis["official_certification"] = {
             "status": "通過評核",
@@ -332,23 +380,25 @@ def classify_restaurant(
 def process_all_restaurants(
     input_path: str,
     output_path: str,
-    certification_csv_path: str
+    certification_csv_path: str,
+    inspection_json_path: str
 ) -> List[Dict[str, Any]]:
     """
-    主流程：讀取原始資料 → 載入官方認證 → 分類 → 輸出
-    
+    主流程：讀取原始資料 → 載入官方認證與稽查資料 → 分類 → 輸出
+
     Args:
         input_path: 爬蟲資料 JSON 路徑
         output_path: 輸出 JSON 路徑
         certification_csv_path: 官方評核 CSV 路徑
-    
+        inspection_json_path: 稽查不合格 JSON 路徑
+
     Returns:
         分類後的餐廳清單
     """
     print("=" * 50)
     print("食品安全風險分級系統")
     print("=" * 50)
-    
+
     # Step 1: 載入官方認證資料
     print("\nStep 1: 載入官方餐飲衛生評核資料...")
     if not os.path.exists(certification_csv_path):
@@ -357,67 +407,91 @@ def process_all_restaurants(
         certified_data = {}
     else:
         certified_data = load_certified_restaurants(certification_csv_path)
-    
+
+    # Step 1.5: 載入稽查不合格資料
+    print("\nStep 1.5: 載入稽查不合格資料...")
+    inspection_failed_data = load_inspection_failed(inspection_json_path)
+
     # Step 2: 載入爬蟲資料
     print(f"\nStep 2: 載入爬蟲資料...")
     if not os.path.exists(input_path):
         raise FileNotFoundError(f"找不到爬蟲資料: {input_path}")
-    
+
     with open(input_path, "r", encoding="utf-8") as f:
-        restaurants = json.load(f)
+        data = json.load(f)
+        # 處理兩種資料格式：直接是陣列 或 包在 restaurants key 裡
+        if isinstance(data, dict) and "restaurants" in data:
+            restaurants = data["restaurants"]
+        elif isinstance(data, list):
+            restaurants = data
+        else:
+            raise ValueError("資料格式錯誤：需要陣列或包含 'restaurants' key 的字典")
     print(f"   共 {len(restaurants)} 家餐廳待分類")
-    
+
     # Step 3: 執行分類
     print(f"\n Step 3: 執行食安風險分類...")
     classified = []
     for i, restaurant in enumerate(restaurants, 1):
-        result = classify_restaurant(restaurant, certified_data)
+        result = classify_restaurant(restaurant, certified_data, inspection_failed_data)
         classified.append(result)
         
         # 進度顯示
         if i % 10 == 0 or i == len(restaurants):
             print(f"   進度: {i}/{len(restaurants)}")
     
-    # Step 4: 排序（推薦順序：官方認證 > 低風險 > 中風險 > 高風險）
+    # Step 4: 排序（推薦順序：官方認證 > 低風險 > 中風險 > 高風險 > 稽查不合格）
     level_order = {
         SafetyLevel.CERTIFIED.value: 0,
         SafetyLevel.LOW_RISK.value: 1,
         SafetyLevel.MEDIUM_RISK.value: 2,
         SafetyLevel.HIGH_RISK.value: 3,
+        SafetyLevel.INSPECTION.value: 4,
     }
     classified.sort(key=lambda x: (
         level_order[x["safety_analysis"]["level"]],
         -x.get("rating", 0)  # 同等級內依 Google 評分排序
     ))
-    
+
     # Step 5: 儲存結果
     print(f"\n Step 4: 儲存分類結果...")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    
+
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(classified, f, ensure_ascii=False, indent=2)
-    
+
     # Step 6: 輸出摘要
     print("\n" + "=" * 50)
     print("分類結果摘要")
     print("=" * 50)
-    
+
     level_emoji = {
-        "官方認證": "✅",
+        "官方認證優": "✅",
         "無/低風險": "🟢",
         "中風險": "🟡",
         "高風險": "🔴",
+        "稽核未通過": "⛔",
     }
-    
+
     for level in SafetyLevel:
         count = sum(1 for r in classified if r["safety_analysis"]["level"] == level.value)
         emoji = level_emoji.get(level.value, "")
         print(f"   {emoji} {level.value}: {count} 家")
-    
+
+    # 稽查不合格餐廳詳情
+    inspection_failed = [r for r in classified if r["safety_analysis"]["level"] == "稽核未通過"]
+    if inspection_failed:
+        print("\n⛔ 稽查不合格餐廳警示：")
+        for r in inspection_failed:
+            name = r.get("name", "未知")
+            inspection_info = r["safety_analysis"].get("inspection_status", {})
+            print(f"   - {name}")
+            if inspection_info:
+                print(f"     登錄字號: {inspection_info.get('registration_number', 'N/A')}")
+
     # 高風險餐廳詳情
     high_risk = [r for r in classified if r["safety_analysis"]["level"] == "高風險"]
     if high_risk:
-        print("\n  高風險餐廳警示：")
+        print("\n🔴 高風險餐廳警示：")
         for r in high_risk:
             name = r.get("name", "未知")
             keywords = r["safety_analysis"]["matched_keywords"]
@@ -441,18 +515,21 @@ if __name__ == "__main__":
     INPUT_PATH = "data/raw/places_with_reviews.json"
     OUTPUT_PATH = "data/processed/safety_classified.json"
     CERTIFICATION_CSV = "data/external/certified_restaurants.csv"
-    
+    INSPECTION_JSON = "scraper/food_business_data.json"
+
     try:
         process_all_restaurants(
             input_path=INPUT_PATH,
             output_path=OUTPUT_PATH,
             certification_csv_path=CERTIFICATION_CSV,
+            inspection_json_path=INSPECTION_JSON,
         )
     except FileNotFoundError as e:
         print(f" 錯誤: {e}")
         print("\n請確認以下檔案存在：")
         print(f"   1. {INPUT_PATH}")
         print(f"   2. {CERTIFICATION_CSV}")
+        print(f"   3. {INSPECTION_JSON}")
     except Exception as e:
         print(f" 未預期的錯誤: {e}")
         raise
