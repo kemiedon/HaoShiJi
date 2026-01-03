@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>好食機 HaoShiJi | 食安把關首選</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-sage: #84A98C; /* 鼠尾草綠 */
+            --primary-dark: #354F52; /* 深森林綠 */
+            --accent-tan: #CAD2C5;   /* 淺亞麻綠 */
+            --bg-cream: #F8F9F7;     /* 極簡奶油白 */
+            --text-main: #2F3E46;    /* 炭灰色 */
+            --text-muted: #667771;   /* 灰綠色 */
+            --card-bg: #FFFFFF;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* 關鍵字專用色值 */
+            --kw-green-bg: rgba(132, 169, 140, 0.12);
+            --kw-green-text: #4A6D55;
+            --kw-red-bg: rgba(214, 40, 40, 0.08);
+            --kw-red-text: #D62828;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-main);
+            font-family: 'Noto Sans TC', sans-serif;
+            font-size: 15px;
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        /* Header Section */
+        .header-section {
+            background-color: var(--card-bg);
+            padding: 50px 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--accent-tan);
+            background-image: radial-gradient(var(--bg-cream) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .brand-title {
+            font-family: 'Zen Old Mincho', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 0;
+            letter-spacing: 8px;
+        }
+
+        .brand-subtitle {
+            font-size: 1.1rem;
+            color: var(--primary-sage);
+            margin: 5px 0 15px;
+            font-weight: 400;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .brand-tagline {
+            display: inline-block;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            position: relative;
+            padding: 0 30px;
+        }
+        
+        .brand-tagline::before, .brand-tagline::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 1px;
+            background-color: var(--accent-tan);
+        }
+        .brand-tagline::before { left: 0; }
+        .brand-tagline::after { right: 0; }
+
+        /* Search Section */
+        .search-section {
+            background-color: var(--card-bg);
+            padding: 30px;
+            margin: -25px auto 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(53, 79, 82, 0.05);
+            border: 1px solid var(--accent-tan);
+            max-width: 1100px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-section h4 {
+            font-family: 'Zen Old Mincho', serif;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--bg-cream);
+            border: 1px solid var(--accent-tan);
+            color: var(--text-main);
+            border-radius: 12px;
+            padding: 10px 15px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-sage);
+            box-shadow: 0 0 0 4px rgba(132, 169, 140, 0.15);
+            background-color: #fff;
+        }
+
+        .form-label {
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        #searchBtn {
+            background-color: var(--primary-dark);
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            border: none;
+            transition: var(--transition);
+        }
+
+        #searchBtn:hover {
+            background-color: var(--primary-sage);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(132, 169, 140, 0.3);
+        }
+
+        /* Content Section */
+        .content-section {
+            display: flex;
+            gap: 25px;
+            height: 650px;
+            margin-bottom: 40px;
+        }
+
+        .map-container {
+            flex: 1.4;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            overflow: hidden;
+            border: 1px solid var(--accent-tan);
+        }
+
+        .restaurant-list-container {
+            flex: 1;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            overflow: hidden;
+            border: 1px solid var(--accent-tan);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .restaurant-list-header {
+            background-color: #fff;
+            border-bottom: 1px solid var(--bg-cream);
+            padding: 20px 25px;
+            z-index: 10;
+        }
+
+        .restaurant-list-header h5 {
+            font-family: 'Zen Old Mincho', serif;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #restaurantListDiv {
+            overflow-y: auto;
+            flex-grow: 1;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-tan) transparent;
+        }
+
+        /* Restaurant Card Style */
+        .restaurant-card {
+            border: none;
+            border-bottom: 1px solid var(--bg-cream);
+            background-color: transparent;
+            transition: var(--transition);
+            padding: 20px 25px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .restaurant-card:hover {
+            background-color: var(--bg-cream);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .star-rating {
+            color: #E9C46A;
+            font-size: 0.9rem;
+        }
+
+        .address-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .food-safety-badge {
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-excellent { background-color: #E8F3ED; color: #4F772D; border: 1px solid rgba(79, 119, 45, 0.1); }
+        .badge-good { background-color: #F1F5F9; color: #475569; border: 1px solid rgba(71, 85, 105, 0.1); }
+        .badge-normal { background-color: #FFFBEB; color: #B45309; border: 1px solid rgba(180, 83, 9, 0.1); }
+        .badge-risk { background-color: #FEF2F2; color: #991B1B; border: 1px solid rgba(153, 27, 27, 0.1); }
+        .badge-official { background-color: var(--primary-sage); color: #fff; font-size: 0.65rem; }
+
+        .keyword-tag {
+            background-color: var(--kw-green-bg);
+            color: var(--kw-green-text);
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+            margin-right: 8px;
+            margin-top: 10px;
+            display: inline-block;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .keyword-tag:hover {
+            transform: scale(1.05);
+            background-color: var(--primary-sage);
+            color: #ffffff;
+            box-shadow: 0 4px 8px rgba(132, 169, 140, 0.2);
+        }
+
+        .keyword-tag.risk {
+            background-color: var(--kw-red-bg);
+            color: var(--kw-red-text);
+            font-weight: 600;
+            border: 1px solid rgba(214, 40, 40, 0.15);
+        }
+
+        .keyword-tag.risk:hover {
+            background-color: var(--kw-red-text);
+            color: #ffffff;
+            box-shadow: 0 4px 8px rgba(214, 40, 40, 0.2);
+        }
+
+        .analysis-info {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        footer {
+            padding: 30px;
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--accent-tan);
+            background-color: #fff;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .content-section { height: auto; flex-direction: column; }
+            .map-container { min-height: 350px; }
+            .brand-title { font-size: 2.5rem; }
+            .search-section { margin: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h1 class="brand-title">好食機</h1>
+        <p class="brand-subtitle">Hao Shi Ji</p>
+        <p class="brand-tagline">看好每一口食安，讓相聚更放心。</p>
+    </div>
+
+    <div class="container main-content">
+        <!-- Search Section -->
+        <div class="search-section">
+            <h4><i class="fas fa-leaf" style="color: var(--primary-sage);"></i> 尋找安心食所</h4>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="citySelect" class="form-label">選擇城市</label>
+                    <select class="form-select" id="citySelect">
+                        <option value="">請選擇縣市</option>
+                        <option value="taipei">台北市</option>
+                        <option value="new_taipei">新北市</option>
+                        <option value="taichung">台中市</option>
+                        <option value="tainan">台南市</option>
+                        <option value="kaohsiung">高雄市</option>
+                        <option value="keelung">基隆市</option>
+                        <option value="taoyuan">桃園市</option>
+                        <option value="hsinchu_city">新竹市</option>
+                        <option value="hsinchu_county">新竹縣</option>
+                        <option value="miaoli">苗栗縣</option>
+                        <option value="changhua">彰化縣</option>
+                        <option value="nantou">南投縣</option>
+                        <option value="yunlin">雲林縣</option>
+                        <option value="chiayi_city">嘉義市</option>
+                        <option value="chiayi_county">嘉義縣</option>
+                        <option value="pingtung">屏東縣</option>
+                        <option value="yilan">宜蘭縣</option>
+                        <option value="hualien">花蓮縣</option>
+                        <option value="taitung">台東縣</option>
+                        <option value="penghu">澎湖縣</option>
+                        <option value="kinmen">金門縣</option>
+                        <option value="lienchiang">連江縣</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="districtSelect" class="form-label">區域範圍</label>
+                    <select class="form-select" id="districtSelect" disabled>
+                        <option value="">請先選擇城市</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="addressInput" class="form-label">關鍵字 / 地址</label>
+                    <input type="text" class="form-control" id="addressInput" placeholder="輸入巷弄或餐廳名">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 text-center text-md-start">
+                    <button class="btn" id="searchBtn">開始探索</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-section">
+            <div class="map-container">
+                <div id="mapDiv" style="width: 100%; height: 100%;"></div>
+            </div>
+
+            <div class="restaurant-list-container">
+                <div class="restaurant-list-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-utensils" style="color: var(--primary-sage);"></i> 分析結果</h5>
+                        <span class="badge rounded-pill bg-light text-dark border">
+                            發現 <span id="restaurantCount">0</span> 處
+                        </span>
+                    </div>
+                </div>
+                
+                <div id="restaurantListDiv">
+                    <!-- 動態插入 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="mb-0">&copy; 2026 好食機製作團隊</p>
+        <p>資料來源：Google Maps 及各大政府網站</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="config.js"></script>
+    
+    <script>
+        const districts = {
+            taipei: ['中正區', '大同區', '中山區', '松山區', '大安區', '文山區', '南港區', '信義區', '士林區', '北投區', '內湖區', '萬華區'],
+            new_taipei: ['板橋區', '汐止區', '新店區', '新莊區', '蘆洲區', '三重區', '中和區', '永和區', '土城區', '樹林區', '淡水區', '三峽區', '鶯歌區', '五股區', '泰山區', '林口區', '深坑區', '石碇區', '坪林區', '三芝區', '石門區', '金山區', '萬里區', '平溪區', '雙溪區', '貢寮區', '瑞芳區', '烏來區'],
+            keelung: ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
+            taoyuan: ['桃園區', '中壢區', '平鎮區', '八德區', '楊梅區', '蘆竹區', '大溪區', '龍潭區', '龜山區', '大園區', '觀音區', '新屋區', '復興區'],
+            hsinchu_city: ['東區', '北區', '香山區'],
+            hsinchu_county: ['竹北市', '竹東鎮', '新埔鎮', '關西鎮', '湖口鄉', '新豐鄉', '芎林鄉', '橫山鄉', '北埔鄉', '寶山鄉', '峨眉鄉', '尖石鄉', '五峰鄉'],
+            miaoli: ['苗栗市', '頭份市', '竹南鎮', '後龍鎮', '通霄鎮', '苑裡鎮', '卓蘭鎮', '造橋鄉', '西湖鄉', '頭屋鄉', '公館鄉', '銅鑼鄉', '三義鄉', '大湖鄉', '獅潭鄉', '三灣鄉', '南庄鄉', '泰安鄉'],
+            taichung: ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '和平區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區'],
+            changhua: ['彰化市', '員林市', '和美鎮', '鹿港鎮', '溪湖鎮', '二林鎮', '田中鎮', '北斗鎮', '花壇鄉', '芬園鄉', '大村鄉', '永靖鄉', '伸港鄉', '線西鄉', '福興鄉', '秀水鄉', '埔心鄉', '埔鹽鄉', '大城鄉', '芳苑鄉', '竹塘鄉', '溪州鄉', '田尾鄉', '社頭鄉'],
+            nantou: ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
+            yunlin: ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '古坑鄉', '大埤鄉', '莿桐鄉', '林內鄉', '二崙鄉', '崙背鄉', '麥寮鄉', '東勢鄉', '褒忠鄉', '臺西鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉'],
+            chiayi_city: ['東區', '西區'],
+            chiayi_county: ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
+            tainan: ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
+            kaohsiung: ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '楠梓區', '小港區', '左營區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
+            pingtung: ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '高樹鄉', '鹽埔鄉', '內埔鄉', '竹田鄉', '萬巒鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '枋山鄉', '三地門鄉', '霧臺鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉', '牡丹鄉'],
+            yilan: ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
+            hualien: ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
+            taitung: ['臺東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉', '東河鄉', '長濱鄉', '鹿野鄉', '池上鄉', '綠島鄉', '延平鄉', '海端鄉', '達仁鄉', '金峰鄉', '蘭嶼鄉'],
+            penghu: ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
+            kinmen: ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
+            lienchiang: ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
+        };
+        
+        document.getElementById('citySelect').addEventListener('change', function() {
+            const selectedCity = this.value;
+            const districtSelect = document.getElementById('districtSelect');
+            if (selectedCity) {
+                districtSelect.disabled = false;
+                districtSelect.innerHTML = '<option value="">請選擇區域</option>';
+                (districts[selectedCity] || []).forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d; opt.textContent = d;
+                    districtSelect.appendChild(opt);
+                });
+            } else {
+                districtSelect.disabled = true;
+                districtSelect.innerHTML = '<option value="">請先選擇城市</option>';
+            }
+        });
+
+        function renderRestaurantCards(data) {
+            const listDiv = document.getElementById('restaurantListDiv');
+            const countSpan = document.getElementById('restaurantCount');
+            listDiv.innerHTML = '';
+            countSpan.textContent = data.length;
+
+            if (data.length === 0) {
+                listDiv.innerHTML = '<div class="p-5 text-center text-muted">目前查無符合條件的餐廳資料</div>';
+                return;
+            }
+
+            data.forEach((res, index) => {
+                const analysis = res.safety_analysis || {};
+                const level = analysis.level || "無資料";
+                
+                let badgeClass = "badge-normal";
+                let icon = "fa-info-circle";
+                if(level.includes("優")) { badgeClass = "badge-excellent"; icon = "fa-shield-halved"; }
+                else if(level.includes("低")) { badgeClass = "badge-good"; icon = "fa-circle-check"; }
+                else if(level.includes("高")) { badgeClass = "badge-risk"; icon = "fa-triangle-exclamation"; }
+
+                const addrId = `res-addr-${index}`;
+                
+                const cardHtml = `
+                    <div class="restaurant-card">
+                        <div class="d-flex justify-content-between align-items-start mb-1">
+                            <h6 class="card-title mb-0">${res.name}</h6>
+                            <span class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <span class="text-dark ms-1 fw-bold">${res.rating || '--'}</span>
+                            </span>
+                        </div>
+                        
+                        <div class="address-text" id="${addrId}">
+                            <i class="fas fa-map-marker-alt opacity-50"></i> 
+                            <span>${res.address || '正在搜尋詳細位置...'}</span>
+                        </div>
+                        
+                        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                            <span class="food-safety-badge ${badgeClass}">
+                                <i class="fas ${icon}"></i> AI：${level}
+                            </span>
+                            ${analysis.official_certification ? 
+                                `<span class="food-safety-badge badge-official">
+                                    <i class="fas fa-award"></i> 官方：${analysis.official_certification.rating}
+                                </span>` : ''
+                            }
+                        </div>
+
+                        <div class="analysis-info">
+                            <i class="far fa-comment-dots"></i> 取樣分析 ${analysis.total_reviews_analyzed || 0} 則近期評論
+                        </div>
+                        
+                        <div class="mt-2">
+                            ${ (analysis.matched_keywords || []).map(kw => {
+                                const isRisk = ['腹瀉','不乾淨','蟑螂','中毒','不衛','異味','拉肚子','蚊蠅','死掉','臭味'].some(r=>kw.includes(r));
+                                return `<span class="keyword-tag ${isRisk ? 'risk' : ''}">${kw}</span>`;
+                            }).join('') }
+                        </div>
+                    </div>
+                `;
+                listDiv.insertAdjacentHTML('beforeend', cardHtml);
+
+                if (!res.address || res.address === '正在搜尋詳細位置...') {
+                    fetchAddressFromGoogle(res.name, addrId);
+                }
+            });
+        }
+
+        function fetchAddressFromGoogle(restaurantName, elementId) {
+            if (!window.google || !window.google.maps || !window.google.maps.places) return;
+            const service = new google.maps.places.PlacesService(document.createElement('div'));
+            const request = { query: restaurantName, fields: ['formatted_address'] };
+            service.findPlaceFromQuery(request, (results, status) => {
+                const addrElement = document.getElementById(elementId);
+                if (!addrElement) return;
+                if (status === google.maps.places.PlacesServiceStatus.OK && results[0]) {
+                    addrElement.querySelector('span').textContent = results[0].formatted_address;
+                } else {
+                    addrElement.querySelector('span').textContent = '未提供地址資料';
+                }
+            });
+        }
+
+        let allRestaurants = [];
+        async function loadData() {
+            try {
+                const response = await fetch('./safety_classified.json');
+                allRestaurants = await response.json();
+                renderRestaurantCards(allRestaurants);
+            } catch (err) {
+                console.error("數據加載失敗", err);
+                document.getElementById('restaurantListDiv').innerHTML = '<div class="p-4 text-danger">資料庫連線失敗，請稍後再試。</div>';
+            }
+        }
+
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const district = document.getElementById('districtSelect').value;
+            const keyword = document.getElementById('addressInput').value.toLowerCase();
+            const filtered = allRestaurants.filter(r => {
+                const matchDistrict = !district || (r.address && r.address.includes(district));
+                const matchKeyword = !keyword || r.name.toLowerCase().includes(keyword) || (r.address && r.address.toLowerCase().includes(keyword));
+                return matchDistrict && matchKeyword;
+            });
+            renderRestaurantCards(filtered);
+            
+            const citySelect = document.getElementById('citySelect');
+            const cityText = citySelect.options[citySelect.selectedIndex].text;
+            const searchKeyword = (cityText === '請選擇縣市' ? '' : cityText) + district + keyword;
+            
+            if (map && searchKeyword.length > 2) {
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': searchKeyword }, function(results, status) {
+                    if (status === 'OK') {
+                        map.setCenter(results[0].geometry.location);
+                        map.setZoom(15);
+                        if (marker) marker.setMap(null);
+                        
+                        // 修改：使用 Google Maps 預設的標示樣式
+                        marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                    }
+                });
+            }
+        });
+
+        let map;
+        let marker;
+        function initMap() {
+          map = new google.maps.Map(document.getElementById("mapDiv"), {
+            center: { lat: 25.034, lng: 121.564 },
+            zoom: 13,
+            styles: [
+                { "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "color": "#617073" }] },
+                { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#F2F2F2" }] },
+                { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#CAD2C5" }, { "visibility": "on" }] }
+            ]
+          });
+          loadData();
+        }
+
+        window.onload = function() {
+            const apiKey = (typeof config !== 'undefined' && config.apiKey) ? config.apiKey : '';
+            if (apiKey) {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places&v=weekly&language=zh-TW`;
+                script.async = true;
+                script.defer = true;
+                document.body.appendChild(script);
+            } else {
+                loadData();
+            }
+        };
+    </script>
+</body>
+</html>
