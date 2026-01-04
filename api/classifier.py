@@ -328,15 +328,15 @@ def classify_restaurant(
         all_matched_keywords.extend(result["matched_keywords"])
     
     # 判定風險等級
-    # 優先級：症狀 > 稽查不合格 > 官方認證 > 生食 > 低風險
-    if symptom_count > 0:
-        level = SafetyLevel.HIGH_RISK
-    elif inspection_failed:
+    # 優先級：稽查不合格 > 官方認證 > 有關鍵字提及（含症狀、生食） > 低風險
+    # 注意：所有關鍵字提及統一歸類為低風險，不再區分中高風險
+    if inspection_failed:
         level = SafetyLevel.INSPECTION
     elif certification:
         level = SafetyLevel.CERTIFIED
-    elif raw_food_count > 0:
-        level = SafetyLevel.MEDIUM_RISK
+    elif symptom_count > 0 or raw_food_count > 0:
+        # 有關鍵字提及但不是稽查不合格，歸為低風險
+        level = SafetyLevel.LOW_RISK
     else:
         level = SafetyLevel.LOW_RISK
 
