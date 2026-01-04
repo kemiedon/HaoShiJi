@@ -98,8 +98,16 @@
             box-shadow: 0 10px 30px rgba(53, 79, 82, 0.05);
             border: 1px solid var(--accent-tan);
             max-width: 1100px;
+            width: 100%;
             position: relative;
             z-index: 10;
+        }
+        
+        /* Main Content Section - 與搜尋區塊同寬 */
+        .main-content {
+            max-width: 1100px;
+            width: 100%;
+            padding: 0 15px;
         }
 
         .search-section h4 {
@@ -212,10 +220,37 @@
             padding: 20px 25px;
             display: block;
             text-decoration: none;
+            cursor: pointer;
+            position: relative;
         }
 
         .restaurant-card:hover {
             background-color: var(--bg-cream);
+        }
+
+        /* 高亮顯示選中的餐廳卡片 */
+        .restaurant-card.active {
+            background-color: #E8F3ED;
+            border-left: 4px solid var(--primary-sage);
+            padding-left: 21px;
+        }
+
+        .restaurant-card.active::before {
+            content: "\f3c5";
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--primary-sage);
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%); }
+            50% { transform: translateY(-60%); }
         }
 
         .card-title {
@@ -228,10 +263,14 @@
         .star-rating {
             color: #E9C46A;
             font-size: 0.9rem;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .address-text {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
             margin-bottom: 10px;
             display: flex;
@@ -249,6 +288,14 @@
             gap: 6px;
         }
 
+        /* 風險等級樣式 */
+        .badge-certified { background-color: #E8F3ED; color: #2D5016; border: 1px solid rgba(45, 80, 22, 0.2); font-weight: 700; }
+        .badge-low-risk { background-color: #F0F9FF; color: #0369A1; border: 1px solid rgba(3, 105, 161, 0.15); }
+        .badge-medium-risk { background-color: #FFFBEB; color: #B45309; border: 1px solid rgba(180, 83, 9, 0.2); }
+        .badge-high-risk { background-color: #FEF2F2; color: #991B1B; border: 1px solid rgba(153, 27, 27, 0.2); font-weight: 700; }
+        .badge-inspection-failed { background-color: #FEE2E2; color: #7F1D1D; border: 2px solid #991B1B; font-weight: 700; }
+        
+        /* 保留向下相容 */
         .badge-excellent { background-color: #E8F3ED; color: #4F772D; border: 1px solid rgba(79, 119, 45, 0.1); }
         .badge-good { background-color: #F1F5F9; color: #475569; border: 1px solid rgba(71, 85, 105, 0.1); }
         .badge-normal { background-color: #FFFBEB; color: #B45309; border: 1px solid rgba(180, 83, 9, 0.1); }
@@ -312,7 +359,12 @@
             .content-section { height: auto; flex-direction: column; }
             .map-container { min-height: 350px; }
             .brand-title { font-size: 2.5rem; }
-            .search-section { margin: 20px; }
+            .search-section { 
+                padding: 20px;
+            }
+            .main-content {
+                padding: 0 20px;
+            }
         }
     </style>
 </head>
@@ -327,8 +379,8 @@
         <!-- Search Section -->
         <div class="search-section">
             <h4><i class="fas fa-leaf" style="color: var(--primary-sage);"></i> 尋找安心食所</h4>
-            <div class="row g-3">
-                <div class="col-md-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-2">
                     <label for="citySelect" class="form-label">選擇城市</label>
                     <select class="form-select" id="citySelect">
                         <option value="">請選擇縣市</option>
@@ -356,20 +408,18 @@
                         <option value="lienchiang">連江縣</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label for="districtSelect" class="form-label">區域範圍</label>
                     <select class="form-select" id="districtSelect" disabled>
                         <option value="">請先選擇城市</option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="addressInput" class="form-label">關鍵字 / 地址</label>
                     <input type="text" class="form-control" id="addressInput" placeholder="輸入巷弄或餐廳名">
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12 text-center text-md-start">
-                    <button class="btn" id="searchBtn">開始探索</button>
+                <div class="col-md-2">
+                    <button class="btn" id="searchBtn" style="width: 100%;">開始探索</button>
                 </div>
             </div>
         </div>
@@ -391,7 +441,8 @@
                 </div>
                 
                 <div id="restaurantListDiv">
-                    <!-- 動態插入 -->
+                    <!-- 假資料範例 -->
+                    
                 </div>
             </div>
         </div>
@@ -404,9 +455,9 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="config.js"></script>
     
     <script>
+        // 城市與行政區對應表
         const districts = {
             taipei: ['中正區', '大同區', '中山區', '松山區', '大安區', '文山區', '南港區', '信義區', '士林區', '北投區', '內湖區', '萬華區'],
             new_taipei: ['板橋區', '汐止區', '新店區', '新莊區', '蘆洲區', '三重區', '中和區', '永和區', '土城區', '樹林區', '淡水區', '三峽區', '鶯歌區', '五股區', '泰山區', '林口區', '深坑區', '石碇區', '坪林區', '三芝區', '石門區', '金山區', '萬里區', '平溪區', '雙溪區', '貢寮區', '瑞芳區', '烏來區'],
@@ -432,22 +483,33 @@
             lienchiang: ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉']
         };
         
-        document.getElementById('citySelect').addEventListener('change', function() {
-            const selectedCity = this.value;
+        // 綁定城市選擇器的變更事件
+        function initCityDistrictSelector() {
+            const citySelect = document.getElementById('citySelect');
             const districtSelect = document.getElementById('districtSelect');
-            if (selectedCity) {
-                districtSelect.disabled = false;
-                districtSelect.innerHTML = '<option value="">請選擇區域</option>';
-                (districts[selectedCity] || []).forEach(d => {
-                    const opt = document.createElement('option');
-                    opt.value = d; opt.textContent = d;
-                    districtSelect.appendChild(opt);
-                });
-            } else {
-                districtSelect.disabled = true;
-                districtSelect.innerHTML = '<option value="">請先選擇城市</option>';
-            }
-        });
+            
+            citySelect.addEventListener('change', function() {
+                const selectedCity = this.value;
+                console.log('選擇的城市:', selectedCity); // 除錯用
+                
+                if (selectedCity && districts[selectedCity]) {
+                    districtSelect.disabled = false;
+                    districtSelect.innerHTML = '<option value="">請選擇區域</option>';
+                    
+                    districts[selectedCity].forEach(d => {
+                        const opt = document.createElement('option');
+                        opt.value = d;
+                        opt.textContent = d;
+                        districtSelect.appendChild(opt);
+                    });
+                    
+                    console.log(`✓ 已載入 ${districts[selectedCity].length} 個行政區`); // 除錯用
+                } else {
+                    districtSelect.disabled = true;
+                    districtSelect.innerHTML = '<option value="">請先選擇城市</option>';
+                }
+            });
+        }
 
         function renderRestaurantCards(data) {
             const listDiv = document.getElementById('restaurantListDiv');
@@ -464,16 +526,45 @@
                 const analysis = res.safety_analysis || {};
                 const level = analysis.level || "無資料";
                 
+                // 根據完整風險等級判定樣式與圖示
                 let badgeClass = "badge-normal";
                 let icon = "fa-info-circle";
-                if(level.includes("優")) { badgeClass = "badge-excellent"; icon = "fa-shield-halved"; }
-                else if(level.includes("低")) { badgeClass = "badge-good"; icon = "fa-circle-check"; }
-                else if(level.includes("高")) { badgeClass = "badge-risk"; icon = "fa-triangle-exclamation"; }
+                
+                switch(level) {
+                    case "官方認證優":
+                        badgeClass = "badge-certified";
+                        icon = "fa-certificate";  // 🏆 認證徽章
+                        break;
+                    case "無/低風險":
+                        badgeClass = "badge-low-risk";
+                        icon = "fa-circle-check";  // ✅ 安全確認
+                        break;
+                    case "中風險":
+                        badgeClass = "badge-medium-risk";
+                        icon = "fa-triangle-exclamation";  // ⚠️ 警告
+                        break;
+                    case "高風險":
+                        badgeClass = "badge-high-risk";
+                        icon = "fa-circle-xmark";  // ❌ 危險
+                        break;
+                    case "稽核未通過":
+                        badgeClass = "badge-inspection-failed";
+                        icon = "fa-ban";  // 🚫 禁止/不合格
+                        break;
+                    default:
+                        // 保留舊邏輯作為備用
+                        if(level.includes("優")) { badgeClass = "badge-certified"; icon = "fa-certificate"; }
+                        else if(level.includes("低")) { badgeClass = "badge-low-risk"; icon = "fa-circle-check"; }
+                        else if(level.includes("中")) { badgeClass = "badge-medium-risk"; icon = "fa-triangle-exclamation"; }
+                        else if(level.includes("高")) { badgeClass = "badge-high-risk"; icon = "fa-circle-xmark"; }
+                        else if(level.includes("稽核") || level.includes("未通過")) { badgeClass = "badge-inspection-failed"; icon = "fa-ban"; }
+                }
 
                 const addrId = `res-addr-${index}`;
+                const cardId = `res-card-${index}`;
                 
                 const cardHtml = `
-                    <div class="restaurant-card">
+                    <div class="restaurant-card" id="${cardId}" data-index="${index}" onclick="highlightRestaurant(${index})">
                         <div class="d-flex justify-content-between align-items-start mb-1">
                             <h6 class="card-title mb-0">${res.name}</h6>
                             <span class="star-rating">
@@ -483,17 +574,17 @@
                         </div>
                         
                         <div class="address-text" id="${addrId}">
-                            <i class="fas fa-map-marker-alt opacity-50"></i> 
-                            <span>${res.address || '正在搜尋詳細位置...'}</span>
+                            <i class="fas fa-location-dot opacity-50"></i> 
+                            <span>${res.formatted_address || '正在搜尋詳細位置...'}</span>
                         </div>
                         
                         <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
                             <span class="food-safety-badge ${badgeClass}">
-                                <i class="fas ${icon}"></i> AI：${level}
+                                <i class="fas ${icon}"></i> 食安評級：${level}
                             </span>
                             ${analysis.official_certification ? 
                                 `<span class="food-safety-badge badge-official">
-                                    <i class="fas fa-award"></i> 官方：${analysis.official_certification.rating}
+                                    <i class="fas fa-award"></i> 官方認證：${analysis.official_certification.rating}
                                 </span>` : ''
                             }
                         </div>
@@ -533,52 +624,87 @@
             });
         }
 
-        let allRestaurants = [];
-        async function loadData() {
-            try {
-                const response = await fetch('./safety_classified.json');
-                allRestaurants = await response.json();
-                renderRestaurantCards(allRestaurants);
-            } catch (err) {
-                console.error("數據加載失敗", err);
-                document.getElementById('restaurantListDiv').innerHTML = '<div class="p-4 text-danger">資料庫連線失敗，請稍後再試。</div>';
-            }
-        }
+        // 移除：不再需要預先載入靜態 JSON
+        // let allRestaurants = [];
+        // async function loadData() {
+        //     try {
+        //         const response = await fetch('./safety_classified.json');
+        //         allRestaurants = await response.json();
+        //         renderRestaurantCards(allRestaurants);
+        //     } catch (err) {
+        //         console.error("數據加載失敗", err);
+        //     }
+        // }
 
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            const district = document.getElementById('districtSelect').value;
-            const keyword = document.getElementById('addressInput').value.toLowerCase();
-            const filtered = allRestaurants.filter(r => {
-                const matchDistrict = !district || (r.address && r.address.includes(district));
-                const matchKeyword = !keyword || r.name.toLowerCase().includes(keyword) || (r.address && r.address.toLowerCase().includes(keyword));
-                return matchDistrict && matchKeyword;
-            });
-            renderRestaurantCards(filtered);
-            
+        // 修改：改用 API 搜尋
+        document.getElementById('searchBtn').addEventListener('click', async function() {
+            // 取得輸入值
             const citySelect = document.getElementById('citySelect');
-            const cityText = citySelect.options[citySelect.selectedIndex].text;
-            const searchKeyword = (cityText === '請選擇縣市' ? '' : cityText) + district + keyword;
+            const district = document.getElementById('districtSelect').value;
+            const address = document.getElementById('addressInput').value;
             
-            if (map && searchKeyword.length > 2) {
-                const geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ 'address': searchKeyword }, function(results, status) {
-                    if (status === 'OK') {
-                        map.setCenter(results[0].geometry.location);
-                        map.setZoom(15);
-                        if (marker) marker.setMap(null);
-                        
-                        // 修改：使用 Google Maps 預設的標示樣式
-                        marker = new google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location
-                        });
-                    }
+            // 取得城市中文名稱
+            const cityText = citySelect.options[citySelect.selectedIndex].text;
+            
+            // 驗證輸入
+            if (!citySelect.value || !address) {
+                alert('請選擇城市並輸入地址');
+                return;
+            }
+            
+            // 顯示 Loading 狀態
+            const originalText = this.innerHTML;
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span style="font-size: 0.9rem;">搜尋中</span>';
+            
+            try {
+                // 發送 API 請求
+                const response = await fetch('http://localhost:5000/api/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        city: cityText,
+                        district: district,
+                        address: address
+                    })
                 });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // 顯示結果
+                    renderRestaurantCards(data.restaurants);
+                    document.getElementById('restaurantCount').textContent = data.count;
+                    
+                    // 在地圖上標記餐廳位置
+                    addRestaurantMarkers(data.restaurants);
+                    
+                    // 標記搜尋中心點（使用第一個餐廳的位置作為參考）
+                    if (data.restaurants.length > 0 && data.restaurants[0].lat && data.restaurants[0].lng) {
+                        addSearchCenterMarker(data.restaurants[0].lat, data.restaurants[0].lng, `${cityText}${district}${address}`);
+                    }
+                    
+                    console.log(`✓ 找到 ${data.count} 間餐廳`);
+                } else {
+                    alert('搜尋失敗：' + data.message);
+                }
+                
+            } catch (error) {
+                console.error('搜尋錯誤:', error);
+                alert('搜尋失敗，請檢查網路連線或稍後再試');
+            } finally {
+                // 恢復按鈕狀態
+                this.disabled = false;
+                this.innerHTML = originalText;
             }
         });
 
         let map;
-        let marker;
+        let markers = []; // 儲存所有標記
+        let infoWindows = []; // 儲存所有資訊視窗
+        let currentRestaurants = []; // 儲存目前的餐廳資料
+        let CustomMarker; // 宣告 CustomMarker 類別
+        
         function initMap() {
           map = new google.maps.Map(document.getElementById("mapDiv"), {
             center: { lat: 25.034, lng: 121.564 },
@@ -586,23 +712,285 @@
             styles: [
                 { "featureType": "all", "elementType": "labels.text.fill", "stylers": [{ "color": "#617073" }] },
                 { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#F2F2F2" }] },
-                { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#CAD2C5" }, { "visibility": "on" }] }
-            ]
+                { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#CAD2C5" }, { "visibility": "on" }] },
+                // 隱藏預設的 POI 圖示
+                { "featureType": "poi", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }
+            ],
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: true
           });
-          loadData();
+          
+          // 在 Google Maps API 載入後定義 CustomMarker 類別
+          CustomMarker = class extends google.maps.OverlayView {
+            constructor(position, map, type, number) {
+                super();
+                this.position = position;
+                this.type = type;
+                this.number = number;
+                
+                // 設定樣式
+                if (type === 'restaurant') {
+                    this.backgroundColor = '#4A7A7E';
+                    this.iconClass = 'fa-utensils';
+                } else {
+                    this.backgroundColor = '#DC2626';
+                    this.iconClass = 'fa-location-dot';
+                }
+                
+                this.setMap(map);
+            }
+            
+            onAdd() {
+                // 創建標記容器
+                this.div = document.createElement('div');
+                this.div.style.position = 'absolute';
+                this.div.style.cursor = 'pointer';
+                
+                // 創建圓形背景
+                const circle = document.createElement('div');
+                circle.style.width = '40px';
+                circle.style.height = '40px';
+                circle.style.borderRadius = '50%';
+                circle.style.backgroundColor = this.backgroundColor;
+                circle.style.border = '2px solid #FFFFFF';
+                circle.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+                circle.style.display = 'flex';
+                circle.style.alignItems = 'center';
+                circle.style.justifyContent = 'center';
+                circle.style.position = 'relative';
+                
+                // 創建 FontAwesome 圖示
+                const icon = document.createElement('i');
+                icon.className = `fas ${this.iconClass}`;
+                icon.style.color = '#FFFFFF';
+                icon.style.fontSize = '18px';
+                
+                circle.appendChild(icon);
+                
+                // 如果有編號，添加編號標籤
+                if (this.number) {
+                    const badge = document.createElement('div');
+                    badge.style.position = 'absolute';
+                    badge.style.top = '-2px';
+                    badge.style.right = '-2px';
+                    badge.style.width = '18px';
+                    badge.style.height = '18px';
+                    badge.style.borderRadius = '50%';
+                    badge.style.backgroundColor = '#DC2626';
+                    badge.style.border = '2px solid #FFFFFF';
+                    badge.style.display = 'flex';
+                    badge.style.alignItems = 'center';
+                    badge.style.justifyContent = 'center';
+                    badge.style.fontSize = '10px';
+                    badge.style.fontWeight = 'bold';
+                    badge.style.color = '#FFFFFF';
+                    badge.textContent = this.number;
+                    
+                    circle.appendChild(badge);
+                }
+                
+                this.div.appendChild(circle);
+                
+                // 添加點擊事件
+                this.div.addEventListener('click', () => {
+                    google.maps.event.trigger(this, 'click');
+                });
+                
+                const panes = this.getPanes();
+                panes.overlayMouseTarget.appendChild(this.div);
+            }
+            
+            draw() {
+                const overlayProjection = this.getProjection();
+                const pos = overlayProjection.fromLatLngToDivPixel(this.position);
+                
+                if (this.div) {
+                    this.div.style.left = (pos.x - 20) + 'px';
+                    this.div.style.top = (pos.y - 20) + 'px';
+                }
+            }
+            
+            onRemove() {
+                if (this.div) {
+                    this.div.parentNode.removeChild(this.div);
+                    this.div = null;
+                }
+            }
+            
+            getPosition() {
+                return this.position;
+            }
+          };
+        }
+        
+        // 清除所有地圖標記
+        function clearMarkers() {
+            markers.forEach(marker => {
+                if (marker.setMap) {
+                    marker.setMap(null);
+                }
+            });
+            markers = [];
+            infoWindows = [];
+        }
+        
+        // 添加搜尋中心點標記（紅色定位圖示）
+        let searchCenterMarker = null;
+        function addSearchCenterMarker(lat, lng, searchQuery) {
+            // 移除舊的中心點標記
+            if (searchCenterMarker) {
+                searchCenterMarker.setMap(null);
+            }
+            
+            const position = { lat: lat, lng: lng };
+            
+            // 創建紅色定位標記 - 使用自定義 HTML 標記
+            searchCenterMarker = new CustomMarker(position, map, 'location', null);
+            
+            // 添加資訊視窗
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="padding: 10px; min-width: 160px;">
+                        <h6 style="margin: 0 0 6px 0; color: #DC2626; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-location-crosshairs" style="font-size: 16px;"></i>
+                            <span>搜尋位置</span>
+                        </h6>
+                        <div style="font-size: 12px; color: #667771; font-weight: 600; margin-top: 4px;">
+                            ${searchQuery}
+                        </div>
+                    </div>
+                `
+            });
+            
+            searchCenterMarker.addListener('click', () => {
+                infoWindow.open(map, searchCenterMarker);
+            });
+        }
+        
+        // 高亮顯示指定的餐廳（地圖標記與列表卡片同步）
+        function highlightRestaurant(index) {
+            // 移除所有卡片的高亮狀態
+            document.querySelectorAll('.restaurant-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // 高亮當前卡片
+            const currentCard = document.getElementById(`res-card-${index}`);
+            if (currentCard) {
+                currentCard.classList.add('active');
+                // 滾動到該卡片
+                currentCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            // 關閉所有資訊視窗
+            infoWindows.forEach(iw => iw.close());
+            
+            // 打開對應的標記資訊視窗
+            if (infoWindows[index] && markers[index]) {
+                infoWindows[index].open(map, markers[index]);
+                
+                // 將地圖中心移到該標記
+                map.panTo(markers[index].getPosition());
+            }
+        }
+        
+        // 在地圖上標記餐廳位置
+        function addRestaurantMarkers(restaurants) {
+            if (!map || restaurants.length === 0) return;
+            
+            clearMarkers(); // 先清除舊標記
+            currentRestaurants = restaurants; // 儲存餐廳資料
+            
+            const bounds = new google.maps.LatLngBounds(); // 用來自動調整地圖範圍
+            
+            restaurants.forEach((restaurant, index) => {
+                if (!restaurant.lat || !restaurant.lng) return; // 沒有經緯度就跳過
+                
+                const position = { lat: restaurant.lat, lng: restaurant.lng };
+                
+                // 創建標記 - 使用自定義 HTML 標記與 FontAwesome 圖示
+                const marker = new CustomMarker(position, map, 'restaurant', index + 1);
+                
+                // 點擊標記時顯示資訊視窗與店家名稱
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="padding: 10px 12px; min-width: 200px;">
+                            <h6 style="margin: 0 0 8px 0; color: #354F52; font-weight: 700; font-size: 15px;">
+                                ${restaurant.name}
+                            </h6>
+                            <div style="color: #E9C46A; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-star" style="font-size: 14px;"></i>
+                                <span style="font-weight: 600; color: #354F52;">${restaurant.rating || '--'}</span>
+                            </div>
+                            <div style="font-size: 12px; color: #667771; margin-top: 6px; display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;">
+                                <i class="fas fa-location-dot" style="margin-top: 2px; flex-shrink: 0; font-size: 13px;"></i>
+                                <span>${restaurant.formatted_address || restaurant.address || ''}</span>
+                            </div>
+                            ${restaurant.safety_analysis ? `
+                            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee;">
+                                <span style="font-size: 11px; color: #84A98C; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-shield-halved" style="font-size: 13px;"></i>
+                                    <span style="font-weight: 600;">${restaurant.safety_analysis.level}</span>
+                                </span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `
+                });
+                
+                // 點擊標記時：顯示店家資訊與資訊視窗
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                    highlightRestaurant(index);
+                });
+                
+                markers.push(marker);
+                infoWindows.push(infoWindow);
+                bounds.extend(position); // 擴展邊界以包含此標記
+            });
+            
+            // 自動調整地圖以顯示所有標記
+            if (restaurants.length === 1) {
+                map.setCenter(bounds.getCenter());
+                map.setZoom(15);
+            } else if (restaurants.length > 1) {
+                map.fitBounds(bounds);
+            }
         }
 
-        window.onload = function() {
-            const apiKey = (typeof config !== 'undefined' && config.apiKey) ? config.apiKey : '';
+        // 從後端獲取配置（包含 Google Maps API Key）
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                return config.googleMapsApiKey;
+            } catch (error) {
+                console.error('無法載入配置:', error);
+                return null;
+            }
+        }
+
+        // 初始化 Google Maps
+        async function initGoogleMaps() {
+            const apiKey = await loadConfig();
+            
             if (apiKey) {
                 const script = document.createElement('script');
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places&v=weekly&language=zh-TW`;
                 script.async = true;
                 script.defer = true;
                 document.body.appendChild(script);
+                console.log('✓ Google Maps API 已載入');
             } else {
-                loadData();
+                console.error('❌ 無法取得 Google Maps API Key');
             }
+        }
+
+        // 頁面載入時初始化
+        window.onload = function() {
+            initCityDistrictSelector(); // 初始化城市/行政區選擇器
+            initGoogleMaps();            // 初始化 Google Maps
         };
     </script>
 </body>

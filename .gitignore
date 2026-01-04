@@ -1,2 +1,7 @@
 # Ignore the config file containing the API key
 config.js
+
+# Project documentation and task management
+docs/
+tasks/
+.env
