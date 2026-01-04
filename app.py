@@ -15,9 +15,9 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
+GOOGLE_PLACES_API_KEY = os.getenv("GOOGLE_PLACES_API_KEY")
 
-if not GOOGLE_MAPS_API_KEY:
+if not GOOGLE_PLACES_API_KEY:
     raise Exception("GOOGLE_PLACES_API_KEY 環境變數未設定")
 
 # ============================================
