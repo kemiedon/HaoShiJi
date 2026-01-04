@@ -291,7 +291,8 @@
 
         /* 風險等級樣式 */
         .badge-certified { background-color: #E8F3ED; color: #2D5016; border: 1px solid rgba(45, 80, 22, 0.2); font-weight: 700; }
-        .badge-low-risk { background-color: #F0F9FF; color: #0369A1; border: 1px solid rgba(3, 105, 161, 0.15); }
+        .badge-safe { background-color: #F0F9FF; color: #0369A1; border: 1px solid rgba(3, 105, 161, 0.15); }
+        .badge-low-risk { background-color: #FFFBEB; color: #B45309; border: 1px solid rgba(180, 83, 9, 0.2); }
         .badge-medium-risk { background-color: #FFFBEB; color: #B45309; border: 1px solid rgba(180, 83, 9, 0.2); }
         .badge-high-risk { background-color: #FEF2F2; color: #991B1B; border: 1px solid rgba(153, 27, 27, 0.2); font-weight: 700; }
         .badge-inspection-failed { background-color: #FEE2E2; color: #7F1D1D; border: 2px solid #991B1B; font-weight: 700; }
@@ -584,9 +585,13 @@
                         badgeClass = "badge-certified";
                         icon = "fa-certificate";  // 🏆 認證徽章
                         break;
-                    case "無/低風險":
-                        badgeClass = "badge-low-risk";
+                    case "安全":
+                        badgeClass = "badge-safe";
                         icon = "fa-circle-check";  // ✅ 安全確認
+                        break;
+                    case "低風險":
+                        badgeClass = "badge-low-risk";
+                        icon = "fa-triangle-exclamation";  // ⚠️ 警告（黃色）
                         break;
                     case "中風險":
                         badgeClass = "badge-medium-risk";
@@ -600,10 +605,15 @@
                         badgeClass = "badge-inspection-failed";
                         icon = "fa-ban";  // 🚫 禁止/不合格
                         break;
+                    case "無/低風險":  // 向下相容舊資料
+                        badgeClass = "badge-safe";
+                        icon = "fa-circle-check";
+                        break;
                     default:
                         // 保留舊邏輯作為備用
                         if(level.includes("優")) { badgeClass = "badge-certified"; icon = "fa-certificate"; }
-                        else if(level.includes("低")) { badgeClass = "badge-low-risk"; icon = "fa-circle-check"; }
+                        else if(level.includes("安全")) { badgeClass = "badge-safe"; icon = "fa-circle-check"; }
+                        else if(level.includes("低")) { badgeClass = "badge-low-risk"; icon = "fa-triangle-exclamation"; }
                         else if(level.includes("中")) { badgeClass = "badge-medium-risk"; icon = "fa-triangle-exclamation"; }
                         else if(level.includes("高")) { badgeClass = "badge-high-risk"; icon = "fa-circle-xmark"; }
                         else if(level.includes("稽核") || level.includes("未通過")) { badgeClass = "badge-inspection-failed"; icon = "fa-ban"; }
