@@ -93,7 +93,7 @@ def search_restaurants():
         # 步驟 4: 呼叫 Google Places API
         print("📡 正在搜尋餐廳...")
         places = search_restaurants_by_text(
-            api_key=GOOGLE_MAPS_API_KEY,
+            api_key=GOOGLE_PLACES_API_KEY,
             query=query,
             min_rating=0.0,  # 修正：改為 min_rating
             max_results=5,
@@ -107,7 +107,7 @@ def search_restaurants():
         for place in places:
             place_id = place["place_id"]
             reviews = get_place_reviews(
-                api_key=GOOGLE_MAPS_API_KEY, place_id=place_id, language="zh-TW"
+                api_key=GOOGLE_PLACES_API_KEY, place_id=place_id, language="zh-TW"
             )
             place["reviews"] = reviews
 
