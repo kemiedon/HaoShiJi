@@ -63,7 +63,7 @@ def static_file(filename):
 @app.route("/api/config", methods=["GET"])
 def get_config():
     """提供前端需要的配置資訊"""
-    return jsonify({"googleMapsApiKey": GOOGLE_MAPS_API_KEY})
+    return jsonify({"googleMapsApiKey": GOOGLE_PLACES_API_KEY})
 
 
 # ============================================
