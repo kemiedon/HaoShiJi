@@ -327,14 +327,11 @@ def classify_restaurant(
         
         all_matched_keywords.extend(result["matched_keywords"])
     
-    # 判定風險等級
-    # 優先級：症狀 > 稽查不合格 > 官方認證 > 生食 > 低風險
+    # 判定風險等級（僅基於評論內容）
+    # 優先級：症狀 > 生食 > 低風險
+    # 官方認證和稽查不合格作為獨立標籤，不影響風險等級
     if symptom_count > 0:
         level = SafetyLevel.HIGH_RISK
-    elif inspection_failed:
-        level = SafetyLevel.INSPECTION
-    elif certification:
-        level = SafetyLevel.CERTIFIED
     elif raw_food_count > 0:
         level = SafetyLevel.MEDIUM_RISK
     else:
@@ -439,18 +436,35 @@ def process_all_restaurants(
         if i % 10 == 0 or i == len(restaurants):
             print(f"   進度: {i}/{len(restaurants)}")
     
-    # Step 4: 排序（推薦順序：官方認證 > 低風險 > 中風險 > 高風險 > 稽查不合格）
-    level_order = {
-        SafetyLevel.CERTIFIED.value: 0,
-        SafetyLevel.LOW_RISK.value: 1,
-        SafetyLevel.MEDIUM_RISK.value: 2,
-        SafetyLevel.HIGH_RISK.value: 3,
-        SafetyLevel.INSPECTION.value: 4,
-    }
-    classified.sort(key=lambda x: (
-        level_order[x["safety_analysis"]["level"]],
-        -x.get("rating", 0)  # 同等級內依 Google 評分排序
-    ))
+    # Step 4: 排序
+    # 排序邏輯：
+    # 1. 稽查不合格優先排在最後（警示用）
+    # 2. 其次按風險等級：低風險 > 中風險 > 高風險
+    # 3. 官方認證在同風險等級內優先顯示
+    # 4. 同等級內依 Google 評分排序
+    def sort_key(restaurant):
+        analysis = restaurant["safety_analysis"]
+        level = analysis["level"]
+        has_certification = analysis.get("official_certification") is not None
+        has_inspection_failed = analysis.get("inspection_status") is not None
+        rating = restaurant.get("rating", 0)
+
+        # 風險等級排序（數字越小越優先）
+        level_order = {
+            SafetyLevel.LOW_RISK.value: 0,
+            SafetyLevel.MEDIUM_RISK.value: 1,
+            SafetyLevel.HIGH_RISK.value: 2,
+        }
+
+        # 排序優先級
+        return (
+            1 if has_inspection_failed else 0,  # 稽查不合格排最後
+            level_order.get(level, 999),         # 風險等級
+            0 if has_certification else 1,       # 官方認證優先
+            -rating                              # Google 評分高的優先
+        )
+
+    classified.sort(key=sort_key)
 
     # Step 5: 儲存結果
     print(f"\n Step 4: 儲存分類結果...")
@@ -464,27 +478,36 @@ def process_all_restaurants(
     print("分類結果摘要")
     print("=" * 50)
 
+    # 統計風險等級
+    print("\n【風險等級分布】")
     level_emoji = {
-        "官方認證優": "✅",
         "無/低風險": "🟢",
         "中風險": "🟡",
         "高風險": "🔴",
-        "稽核未通過": "⛔",
     }
 
-    for level in SafetyLevel:
-        count = sum(1 for r in classified if r["safety_analysis"]["level"] == level.value)
-        emoji = level_emoji.get(level.value, "")
-        print(f"   {emoji} {level.value}: {count} 家")
+    # 只統計三個風險等級
+    for level_value in [SafetyLevel.LOW_RISK.value, SafetyLevel.MEDIUM_RISK.value, SafetyLevel.HIGH_RISK.value]:
+        count = sum(1 for r in classified if r["safety_analysis"]["level"] == level_value)
+        emoji = level_emoji.get(level_value, "")
+        print(f"   {emoji} {level_value}: {count} 家")
+
+    # 統計官方認證和稽查不合格（獨立標籤）
+    print("\n【獨立標籤統計】")
+    certified_count = sum(1 for r in classified if r["safety_analysis"].get("official_certification") is not None)
+    inspection_failed_count = sum(1 for r in classified if r["safety_analysis"].get("inspection_status") is not None)
+    print(f"   ✅ 官方認證優: {certified_count} 家")
+    print(f"   ⛔ 稽核未通過: {inspection_failed_count} 家")
 
     # 稽查不合格餐廳詳情
-    inspection_failed = [r for r in classified if r["safety_analysis"]["level"] == "稽核未通過"]
+    inspection_failed = [r for r in classified if r["safety_analysis"].get("inspection_status") is not None]
     if inspection_failed:
         print("\n⛔ 稽查不合格餐廳警示：")
         for r in inspection_failed:
             name = r.get("name", "未知")
+            level = r["safety_analysis"]["level"]
             inspection_info = r["safety_analysis"].get("inspection_status", {})
-            print(f"   - {name}")
+            print(f"   - {name} ({level})")
             if inspection_info:
                 print(f"     登錄字號: {inspection_info.get('registration_number', 'N/A')}")
 
