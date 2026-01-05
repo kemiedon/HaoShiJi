@@ -297,6 +297,28 @@
         .badge-high-risk { background-color: #FEF2F2; color: #991B1B; border: 1px solid rgba(153, 27, 27, 0.2); font-weight: 700; }
         .badge-inspection-failed { background-color: #FEE2E2; color: #7F1D1D; border: 2px solid #991B1B; font-weight: 700; }
         
+        /* 特殊標記樣式 */
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 8px;
+        }
+        .status-badge-certified {
+            background-color: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+        .status-badge-inspection-failed {
+            background-color: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
+        }
+        
         /* 保留向下相容 */
         .badge-excellent { background-color: #E8F3ED; color: #4F772D; border: 1px solid rgba(79, 119, 45, 0.1); }
         .badge-good { background-color: #F1F5F9; color: #475569; border: 1px solid rgba(71, 85, 105, 0.1); }
@@ -622,10 +644,22 @@
                 const addrId = `res-addr-${index}`;
                 const cardId = `res-card-${index}`;
                 
+                // 檢查官方認證和稽核狀態
+                const hasCertification = analysis.official_certification;
+                const hasInspectionFailed = analysis.inspection_status;
+                
                 const cardHtml = `
                     <div class="restaurant-card" id="${cardId}" data-index="${index}" onclick="highlightRestaurant(${index})">
                         <div class="d-flex justify-content-between align-items-start mb-1">
-                            <h6 class="card-title mb-0">${res.name}</h6>
+                            <div class="d-flex align-items-center flex-wrap">
+                                <h6 class="card-title mb-0">${res.name}</h6>
+                                ${hasCertification ? 
+                                    '<span class="status-badge status-badge-certified"><i class="fas fa-certificate"></i> 官方認證優</span>' : ''
+                                }
+                                ${hasInspectionFailed ? 
+                                    '<span class="status-badge status-badge-inspection-failed"><i class="fas fa-exclamation-triangle"></i> 稽核未通過</span>' : ''
+                                }
+                            </div>
                             <span class="star-rating">
                                 <i class="fas fa-star"></i>
                                 <span class="text-dark ms-1 fw-bold">${res.rating || '--'}</span>
