@@ -291,10 +291,10 @@
 
         /* 風險等級樣式 */
         .badge-certified { background-color: #E8F3ED; color: #2D5016; border: 1px solid rgba(45, 80, 22, 0.2); font-weight: 700; }
-        .badge-safe { background-color: #F0F9FF; color: #0369A1; border: 1px solid rgba(3, 105, 161, 0.15); }
-        .badge-low-risk { background-color: #FFFBEB; color: #B45309; border: 1px solid rgba(180, 83, 9, 0.2); }
-        .badge-medium-risk { background-color: #FFFBEB; color: #B45309; border: 1px solid rgba(180, 83, 9, 0.2); }
-        .badge-high-risk { background-color: #FEF2F2; color: #991B1B; border: 1px solid rgba(153, 27, 27, 0.2); font-weight: 700; }
+        .badge-safe { background-color: #E0F2FE; color: #075985; border: 1px solid rgba(7, 89, 133, 0.2); font-weight: 600; } /* 天藍色-安全 */
+        .badge-low-risk { background-color: #FEF3C7; color: #92400E; border: 1px solid rgba(146, 64, 14, 0.2); font-weight: 600; } /* 琥珀黃-低風險 */
+        .badge-medium-risk { background-color: #FED7AA; color: #9A3412; border: 1px solid rgba(154, 52, 18, 0.2); font-weight: 600; } /* 橘色-中風險 */
+        .badge-high-risk { background-color: #FECACA; color: #991B1B; border: 1px solid rgba(153, 27, 27, 0.3); font-weight: 700; } /* 紅色-高風險 */
         .badge-inspection-failed { background-color: #FEE2E2; color: #7F1D1D; border: 2px solid #991B1B; font-weight: 700; }
         
         /* 特殊標記樣式 */
@@ -673,7 +673,7 @@
                         
                         <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
                             <span class="food-safety-badge ${badgeClass}">
-                                <i class="fas ${icon}"></i> 食安評級：${level}
+                                <i class="fas ${icon}"></i> 食安評級：${level === '無/低風險' && (analysis.symptom_mentions === 0 && analysis.raw_food_mentions === 0) ? '安全' : level === '無/低風險' ? '低風險' : level}
                             </span>
                             ${analysis.official_certification ? 
                                 `<span class="food-safety-badge badge-official">
