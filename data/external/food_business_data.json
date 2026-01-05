@@ -1,0 +1,23 @@
+[
+  {
+    "company_name": "鼎泰豐(信義店)",
+    "registration_number": "A-123456789",
+    "address": "台北市信義區市府路45號",
+    "failed_items": ["衛生管理不合格"],
+    "inspection_date": "2025-12-01"
+  },
+  {
+    "company_name": "小南門福州傻瓜乾麵",
+    "registration_number": "B-987654321",
+    "address": "台北市中正區羅斯福路一段10號",
+    "failed_items": ["食材保存不當"],
+    "inspection_date": "2025-11-15"
+  },
+  {
+    "company_name": "阿宗麵線",
+    "registration_number": "C-555666777",
+    "address": "台北市萬華區峨眉街8-1號",
+    "failed_items": ["環境清潔不佳"],
+    "inspection_date": "2025-10-20"
+  }
+]

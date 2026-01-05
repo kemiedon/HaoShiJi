@@ -34,10 +34,9 @@ from datetime import datetime
 class SafetyLevel(Enum):
     """食安風險等級"""
 
-    HIGH_RISK = "高風險"  # (已停用，保留定義)
-    MEDIUM_RISK = "中風險"  # (已停用，保留定義)
-    LOW_RISK = "低風險"  # 有關鍵字提及（症狀/生食）但非稽核不合格
-    SAFE = "安全"  # 無任何風險關鍵字
+    HIGH_RISK = "高風險"
+    MEDIUM_RISK = "中風險"
+    LOW_RISK = "無/低風險"
     CERTIFIED = "官方認證優"
     INSPECTION = "稽核未通過"
 
@@ -385,37 +384,18 @@ def classify_restaurant(
 
         all_matched_keywords.extend(result["matched_keywords"])
 
-    # ============================================
-    # 判定風險等級 - 規則變更歷史
-    # ============================================
-    # 
-    # 【舊規則 v1.0】(已停用)
+    # 判定風險等級
     # 優先級：症狀 > 稽查不合格 > 官方認證 > 生食 > 低風險
-    # - 症狀關鍵字 (symptom_count > 0) → 高風險
-    # - 稽查不合格 (inspection_failed) → 稽核未通過
-    # - 官方認證 (certification) → 官方認證優
-    # - 生食關鍵字 (raw_food_count > 0) → 中風險
-    # - 無任何關鍵字 → 無/低風險
-    #
-    # 【新規則 v2.0】(目前使用中)
-    # 優先級：稽查不合格 > 官方認證 > 有關鍵字 > 無關鍵字
-    # - 稽查不合格 (inspection_failed) → 稽核未通過
-    # - 官方認證 (certification) → 官方認證優
-    # - 有任何關鍵字 (symptom_count > 0 or raw_food_count > 0) → 低風險 ⚠️
-    # - 無任何關鍵字 → 安全 ✓
-    #
-    # ============================================
-    
-    if inspection_failed:
+    if symptom_count > 0:
+        level = SafetyLevel.HIGH_RISK
+    elif inspection_failed:
         level = SafetyLevel.INSPECTION
     elif certification:
         level = SafetyLevel.CERTIFIED
-    elif symptom_count > 0 or raw_food_count > 0:
-        # 有關鍵字提及（症狀或生食），但不是稽查不合格 → 標示為低風險
-        level = SafetyLevel.LOW_RISK
+    elif raw_food_count > 0:
+        level = SafetyLevel.MEDIUM_RISK
     else:
-        # 無任何風險關鍵字 → 安全
-        level = SafetyLevel.SAFE
+        level = SafetyLevel.LOW_RISK
 
     # 組裝分析結果
     safety_analysis = {
