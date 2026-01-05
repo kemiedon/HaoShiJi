@@ -34,8 +34,7 @@ from datetime import datetime
 class SafetyLevel(Enum):
     """食安風險等級"""
 
-    HIGH_RISK = "高風險"
-    MEDIUM_RISK = "中風險"
+    CAUTION = "注意"  # 有任何關鍵字提及（症狀/生食）
     LOW_RISK = "無/低風險"
     CERTIFIED = "官方認證優"
     INSPECTION = "稽核未通過"
@@ -385,15 +384,14 @@ def classify_restaurant(
         all_matched_keywords.extend(result["matched_keywords"])
 
     # 判定風險等級
-    # 優先級：症狀 > 稽查不合格 > 官方認證 > 生食 > 低風險
-    if symptom_count > 0:
-        level = SafetyLevel.HIGH_RISK
-    elif inspection_failed:
+    # 優先級：稽查不合格 > 官方認證 > 有關鍵字（注意） > 無關鍵字
+    if inspection_failed:
         level = SafetyLevel.INSPECTION
     elif certification:
         level = SafetyLevel.CERTIFIED
-    elif raw_food_count > 0:
-        level = SafetyLevel.MEDIUM_RISK
+    elif symptom_count > 0 or raw_food_count > 0:
+        # 有任何關鍵字提及（症狀、生食等）→ 標示為注意
+        level = SafetyLevel.CAUTION
     else:
         level = SafetyLevel.LOW_RISK
 

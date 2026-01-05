@@ -293,8 +293,7 @@
         .badge-certified { background-color: #E8F3ED; color: #2D5016; border: 1px solid rgba(45, 80, 22, 0.2); font-weight: 700; }
         .badge-safe { background-color: #E0F2FE; color: #075985; border: 1px solid rgba(7, 89, 133, 0.2); font-weight: 600; } /* 天藍色-安全 */
         .badge-low-risk { background-color: #FEF3C7; color: #92400E; border: 1px solid rgba(146, 64, 14, 0.2); font-weight: 600; } /* 琥珀黃-低風險 */
-        .badge-medium-risk { background-color: #FED7AA; color: #9A3412; border: 1px solid rgba(154, 52, 18, 0.2); font-weight: 600; } /* 橘色-中風險 */
-        .badge-high-risk { background-color: #FECACA; color: #991B1B; border: 1px solid rgba(153, 27, 27, 0.3); font-weight: 700; } /* 紅色-高風險 */
+        .badge-caution { background-color: #FED7AA; color: #9A3412; border: 1px solid rgba(154, 52, 18, 0.2); font-weight: 600; } /* 橘黃色-注意 */
         .badge-inspection-failed { background-color: #FEE2E2; color: #7F1D1D; border: 2px solid #991B1B; font-weight: 700; }
         
         /* 特殊標記樣式 */
@@ -370,7 +369,7 @@
         }
 
         footer {
-            padding: 30px;
+            padding: 15px 30px;
             color: var(--text-muted);
             text-align: center;
             font-size: 0.85rem;
@@ -478,13 +477,14 @@
     </div>
 
     <footer>
-        <p class="mb-0">&copy; 2026 好食機製作團隊</p>
-        <p>資料來源：Google Maps 及各大政府網站</p>
-        <p class="mt-2">
+        <p class="mb-0">
+            &copy; 2026 好食機製作團隊
+            <span style="margin: 0 15px; color: var(--accent-tan);">|</span>
             <a href="#" data-bs-toggle="modal" data-bs-target="#disclaimerModal" style="color: var(--primary-sage); text-decoration: none;">
                 <i class="fas fa-exclamation-triangle"></i> 免責聲明
             </a>
         </p>
+        <p class="mb-0" style="margin-top: 5px;">資料來源：Google Maps 及各大政府網站</p>
     </footer>
 
     <!-- 免責聲明 Modal -->
@@ -607,6 +607,10 @@
                         badgeClass = "badge-certified";
                         icon = "fa-certificate";  // 🏆 認證徽章
                         break;
+                    case "注意":
+                        badgeClass = "badge-caution";
+                        icon = "fa-exclamation-circle";  // ⚠️ 注意
+                        break;
                     case "安全":
                         badgeClass = "badge-safe";
                         icon = "fa-circle-check";  // ✅ 安全確認
@@ -614,14 +618,6 @@
                     case "低風險":
                         badgeClass = "badge-low-risk";
                         icon = "fa-triangle-exclamation";  // ⚠️ 警告（黃色）
-                        break;
-                    case "中風險":
-                        badgeClass = "badge-medium-risk";
-                        icon = "fa-triangle-exclamation";  // ⚠️ 警告
-                        break;
-                    case "高風險":
-                        badgeClass = "badge-high-risk";
-                        icon = "fa-circle-xmark";  // ❌ 危險
                         break;
                     case "稽核未通過":
                         badgeClass = "badge-inspection-failed";
@@ -634,10 +630,9 @@
                     default:
                         // 保留舊邏輯作為備用
                         if(level.includes("優")) { badgeClass = "badge-certified"; icon = "fa-certificate"; }
+                        else if(level.includes("注意")) { badgeClass = "badge-caution"; icon = "fa-exclamation-circle"; }
                         else if(level.includes("安全")) { badgeClass = "badge-safe"; icon = "fa-circle-check"; }
                         else if(level.includes("低")) { badgeClass = "badge-low-risk"; icon = "fa-triangle-exclamation"; }
-                        else if(level.includes("中")) { badgeClass = "badge-medium-risk"; icon = "fa-triangle-exclamation"; }
-                        else if(level.includes("高")) { badgeClass = "badge-high-risk"; icon = "fa-circle-xmark"; }
                         else if(level.includes("稽核") || level.includes("未通過")) { badgeClass = "badge-inspection-failed"; icon = "fa-ban"; }
                 }
 
@@ -673,7 +668,7 @@
                         
                         <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
                             <span class="food-safety-badge ${badgeClass}">
-                                <i class="fas ${icon}"></i> 食安評級：${level === '無/低風險' && (analysis.symptom_mentions === 0 && analysis.raw_food_mentions === 0) ? '安全' : level === '無/低風險' ? '低風險' : level}
+                                <i class="fas ${icon}"></i> 食安評級：${level}
                             </span>
                             ${analysis.official_certification ? 
                                 `<span class="food-safety-badge badge-official">

@@ -138,13 +138,12 @@ def search_restaurants():
             extra_info = f" ({', '.join(extras)})" if extras else ""
             print(f"  - {place['name']}: {review_count} 則評論 → {level}{extra_info}")
 
-        # 步驟 7: 依風險等級排序（推薦順序：官方認證 > 低風險 > 中風險 > 高風險 > 稽查不合格）
+        # 步驟 7: 依風險等級排序（推薦順序：官方認證 > 低風險 > 注意 > 稽查不合格）
         level_order = {
             SafetyLevel.CERTIFIED.value: 0,
             SafetyLevel.LOW_RISK.value: 1,
-            SafetyLevel.MEDIUM_RISK.value: 2,
-            SafetyLevel.HIGH_RISK.value: 3,
-            SafetyLevel.INSPECTION.value: 4,
+            SafetyLevel.CAUTION.value: 2,
+            SafetyLevel.INSPECTION.value: 3,
         }
         analyzed_places.sort(
             key=lambda x: (
