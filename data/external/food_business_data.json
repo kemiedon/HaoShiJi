@@ -1,23 +1,1052 @@
 [
   {
-    "company_name": "鼎泰豐(信義店)",
-    "registration_number": "A-123456789",
-    "address": "台北市信義區市府路45號",
-    "failed_items": ["衛生管理不合格"],
-    "inspection_date": "2025-12-01"
+    "company_name": "連大莊企業有限公司-華江高中熱食部",
+    "address": "臺北市萬華區西藏路213號",
+    "registration_number": "A-180529551-00005-8"
   },
   {
-    "company_name": "小南門福州傻瓜乾麵",
-    "registration_number": "B-987654321",
-    "address": "台北市中正區羅斯福路一段10號",
-    "failed_items": ["食材保存不當"],
-    "inspection_date": "2025-11-15"
+    "company_name": "悟饕池上飯包台北羅斯福店-悟饕台北羅斯福路店",
+    "address": "臺北市中正區羅斯福路2段126之4號、128之1號1樓",
+    "registration_number": "A-198915773-00001-8"
   },
   {
-    "company_name": "阿宗麵線",
-    "registration_number": "C-555666777",
-    "address": "台北市萬華區峨眉街8-1號",
-    "failed_items": ["環境清潔不佳"],
-    "inspection_date": "2025-10-20"
+    "company_name": "池上便當",
+    "address": "臺北市信義區信義路六段104號",
+    "registration_number": "A-200067450-00001-2"
+  },
+  {
+    "company_name": "車站腿庫飯-車站腿庫飯",
+    "address": "臺北市士林區延平北路6段142號",
+    "registration_number": "A-200108776-00004-2"
+  },
+  {
+    "company_name": "紅蕃茄餐飲事業有限公司-紅蕃茄自助餐",
+    "address": "臺北市文山區汀洲路四段88號",
+    "registration_number": "A-124399710-00038-4"
+  },
+  {
+    "company_name": "昊翰食品有限公司-御喜自助餐",
+    "address": "臺北市大安區羅斯福路四段一號",
+    "registration_number": "A-128858882-00003-0"
+  },
+  {
+    "company_name": "幸福時光廚房",
+    "address": "臺北市中正區濟南路1段321號",
+    "registration_number": "A-175904839-00003-6"
+  },
+  {
+    "company_name": "樂利餐廳.Dolce Park-樂利餐廳",
+    "address": "臺北市南港區三重路19-8號1樓",
+    "registration_number": "A-180519435-00004-7"
+  },
+  {
+    "company_name": "佳欣自助餐-佳欣自助餐(國立臺灣大學男二宿舍餐廳)",
+    "address": "臺北市中正區徐州路2之3號",
+    "registration_number": "A-200039003-00004-8"
+  },
+  {
+    "company_name": "萬發自助餐-萬發自助餐",
+    "address": "臺北市信義區松山路157號1樓",
+    "registration_number": "A-200246660-00001-4"
+  },
+  {
+    "company_name": "neverland LITE",
+    "address": "臺北市南港區南港路1段265-271號",
+    "registration_number": "A-154159569-00001-3"
+  },
+  {
+    "company_name": "食芋堂-食芋堂",
+    "address": "臺北市中山區松江路297巷5號1樓",
+    "registration_number": "A-183745771-00003-3"
+  },
+  {
+    "company_name": "津野蜂蜜蛋糕",
+    "address": "臺北市信義區中坡南路18號",
+    "registration_number": "A-200192358-00001-8"
+  },
+  {
+    "company_name": "胖老爹炸雞有限公司-胖老爹美式炸雞大直店",
+    "address": "臺北市中山區北安路535-5號",
+    "registration_number": "A-142675890-00080-7"
+  },
+  {
+    "company_name": "Foodie Bro Brunch",
+    "address": "臺北市中山區吉林路315巷40號",
+    "registration_number": "A-172914406-00001-2"
+  },
+  {
+    "company_name": "幾點了早餐-幾點了早餐",
+    "address": "臺北市松山區敦化北路165巷1號",
+    "registration_number": "A-188227663-00001-1"
+  },
+  {
+    "company_name": "二十一世紀生活事業股份有限公司-21世紀-石牌",
+    "address": "臺北市北投區明德路365號",
+    "registration_number": "A-189627033-00206-4"
+  },
+  {
+    "company_name": "SUBWAY東湖店-subway東湖餐廳",
+    "address": "臺北市內湖區康寧路3段187號地下1層及1樓",
+    "registration_number": "A-190762850-00001-6"
+  },
+  {
+    "company_name": "拿坡里披薩炸雞、三商巧福、福勝亭、鮮五丼、品川蘭、BANCO、三商炸雞、巧福PLUS、咖意哩-三商巧福 石牌門市部",
+    "address": "臺北市北投區永明里石牌路二段29號",
+    "registration_number": "A-197301707-00583-8"
+  },
+  {
+    "company_name": "呷尚宝",
+    "address": "臺北市信義區福德街268巷2-2號1樓",
+    "registration_number": "A-200074375-00001-6"
+  },
+  {
+    "company_name": "東方美早餐店",
+    "address": "臺北市內湖區康樂街147號",
+    "registration_number": "A-200127348-00001-5"
+  },
+  {
+    "company_name": "秦小姐早餐店",
+    "address": "臺北市信義區福德街226號",
+    "registration_number": "A-200129115-00001-9"
+  },
+  {
+    "company_name": "品客早午餐",
+    "address": "臺北市士林區大南路370號",
+    "registration_number": "A-200194370-00001-4"
+  },
+  {
+    "company_name": "永和四海豆漿",
+    "address": "臺北市信義區大道里大道路２號１樓",
+    "registration_number": "A-200234096-00001-4"
+  },
+  {
+    "company_name": "麥味登-北市八德金控店-北市八德金控店",
+    "address": "臺北市中山區八德路2段345號1樓",
+    "registration_number": "A-202278535-00001-2"
+  },
+  {
+    "company_name": "弘爺漢堡大東店-弘爺漢堡大東店",
+    "address": "臺北市士林區大東路120號",
+    "registration_number": "A-202316013-00001-6"
+  },
+  {
+    "company_name": "盒你胃",
+    "address": "臺北市信義區嘉興街10號",
+    "registration_number": "A-278964220-00001-8"
+  },
+  {
+    "company_name": "綠逗薏人-綠逗薏人",
+    "address": "臺北市中正區金山南路一段148號",
+    "registration_number": "A-125035815-00004-1"
+  },
+  {
+    "company_name": "CoCo都可-捷運北車門市",
+    "address": "臺北市中正區忠孝西路一段49號B3(捷運北車10號店舖)",
+    "registration_number": "A-128402188-00017-9"
+  },
+  {
+    "company_name": "意精研有限公司-慶城營業所",
+    "address": "臺北市松山區中正里慶城街1號1樓",
+    "registration_number": "A-128409773-00012-1"
+  },
+  {
+    "company_name": "黑丸嫩仙草-東湖康寧店",
+    "address": "臺北市內湖區康寧路三段189巷7號",
+    "registration_number": "A-128869972-00011-1"
+  },
+  {
+    "company_name": "凱禾騰國際股份有限公司-茶聚台北長安",
+    "address": "臺北市大同區長安西路129號",
+    "registration_number": "A-153841919-00057-0"
+  },
+  {
+    "company_name": "清心福全-台北北投自強店",
+    "address": "臺北市北投區自強街115號",
+    "registration_number": "A-180582719-00391-1"
+  },
+  {
+    "company_name": "米迪兒國際有限公司-因果茶",
+    "address": "臺北市信義區松智路17號b2 微風南山美食廣場",
+    "registration_number": "A-185024221-00002-4"
+  },
+  {
+    "company_name": "五桐號-五桐號-台北合江店",
+    "address": "臺北市中山區江山里合江街113號1樓",
+    "registration_number": "A-188360578-00001-4"
+  },
+  {
+    "company_name": "Cong Caphe-Cong Caphe 台北總店",
+    "address": "臺北市中正區開封街一段16號",
+    "registration_number": "A-193604547-00001-7"
+  },
+  {
+    "company_name": "山上咖啡-山上咖啡",
+    "address": "臺北市文山區指南路3段38巷33之7號",
+    "registration_number": "A-193640662-00001-5"
+  },
+  {
+    "company_name": "東海萊姆園",
+    "address": "臺北市大安區永康街4巷14號",
+    "registration_number": "A-200164243-00001-0"
+  },
+  {
+    "company_name": "黑冠美食-黑冠美食",
+    "address": "臺北市中正區羅斯福路１段８號（南門市場２Ｆ－６８）",
+    "registration_number": "A-202271001-00001-3"
+  },
+  {
+    "company_name": "古早味紅茶",
+    "address": "臺北市北投區石牌路一段166巷136號",
+    "registration_number": "A-202285377-00001-4"
+  },
+  {
+    "company_name": "緯人紅茶冰-緯人紅茶冰 臨江店",
+    "address": "臺北市大安區臨江街３６號前",
+    "registration_number": "A-202321395-00001-5"
+  },
+  {
+    "company_name": "台北美福大飯店-潮粵坊港潮餐廳",
+    "address": "臺北市中山區樂群二路55號1樓",
+    "registration_number": "A-124552087-00003-4"
+  },
+  {
+    "company_name": "點22 港式點心專賣店-文山興隆店-點22 港式點心專賣店-文山興隆店",
+    "address": "臺北市文山區興隆路3段112巷2弄22號",
+    "registration_number": "A-100049324-00001-1"
+  },
+  {
+    "company_name": "煉瓦良茶-煉瓦良茶",
+    "address": "臺北市大同區華陰街95號1樓",
+    "registration_number": "A-100543612-00000-9"
+  },
+  {
+    "company_name": "茂昌草本茶",
+    "address": "臺北市士林區士東路128號1樓",
+    "registration_number": "A-100564799-00000-8"
+  },
+  {
+    "company_name": "健康獵人",
+    "address": "臺北市大安區大安路1段170號",
+    "registration_number": "A-100566570-00000-7"
+  },
+  {
+    "company_name": "大溪地休閒農場有限公司-大溪地休閒農場有限公司",
+    "address": "臺北市士林區中社路1段7號",
+    "registration_number": "A-112660168-00002-0"
+  },
+  {
+    "company_name": "世運食品-世運食品",
+    "address": "臺北市萬華區成都路78號1樓",
+    "registration_number": "A-115105903-00002-4"
+  },
+  {
+    "company_name": "三澧企業股份有限公司-Mo-Mo-Paradise 台北復興",
+    "address": "臺北市中山區復興南路1段42號 C01",
+    "registration_number": "A-116098275-00015-2"
+  },
+  {
+    "company_name": "統一超商股份有限公司-統全",
+    "address": "臺北市中正區汀州路三段249號",
+    "registration_number": "A-122555003-27410-4"
+  },
+  {
+    "company_name": "統一超商股份有限公司-北捷",
+    "address": "臺北市中正區忠孝西路一段49號B3樓",
+    "registration_number": "A-122555003-44504-7"
+  },
+  {
+    "company_name": "統一超商股份有限公司-巨蛋",
+    "address": "臺北市信義區忠孝東路四段500之2號",
+    "registration_number": "A-122555003-57674-9"
+  },
+  {
+    "company_name": "鬍鬚張-台北南昌店",
+    "address": "臺北市中正區南昌路一段70號",
+    "registration_number": "A-122721208-00027-1"
+  },
+  {
+    "company_name": "全家便利商店股份有限公司-新信德店",
+    "address": "臺北市信義區松德路２８３號",
+    "registration_number": "A-123060248-05574-4"
+  },
+  {
+    "company_name": "萊爾富-文山大王店",
+    "address": "臺北市文山區木新路二段141、143號一樓",
+    "registration_number": "A-123285582-94539-3"
+  },
+  {
+    "company_name": "喫飯食堂",
+    "address": "臺北市大安區永康街8巷5號1樓",
+    "registration_number": "A-124556921-00001-3"
+  },
+  {
+    "company_name": "AREMA",
+    "address": "臺北市中正區市民大道100號台北地下街6號、15之1號、15之3號、S15之1號店舖",
+    "registration_number": "A-124851260-00001-7"
+  },
+  {
+    "company_name": "嘜記飯堂-HONG KONG茶水攤",
+    "address": "臺北市大安區敦化南路1段190巷19號",
+    "registration_number": "A-124930949-00001-9"
+  },
+  {
+    "company_name": "威宇牛排、扶旺號、小旺號、炎弟-威宇牛排",
+    "address": "臺北市中正區汀州路三段257號1樓",
+    "registration_number": "A-124959277-00004-7"
+  },
+  {
+    "company_name": "真之庵壽司割烹-真真庵壽司割烹",
+    "address": "臺北市松山區南京東路3段303巷7弄5號",
+    "registration_number": "A-126211780-00001-6"
+  },
+  {
+    "company_name": "盛鑫-天母盛鑫美麗華店",
+    "address": "臺北市中山區敬業三路20號",
+    "registration_number": "A-127340452-00002-7"
+  },
+  {
+    "company_name": "聽雨軒 LIVING FOREST-潼鐵板料理",
+    "address": "臺北市士林區至善路3段342號",
+    "registration_number": "A-131210516-00002-9"
+  },
+  {
+    "company_name": "炫庄小吃店-炫庄",
+    "address": "臺北市中山區長安東路2段31號1樓",
+    "registration_number": "A-142268958-00001-3"
+  },
+  {
+    "company_name": "一条通-一条通石牌門市",
+    "address": "臺北市北投區石牌路2段31號(1樓)",
+    "registration_number": "A-142727073-00001-1"
+  },
+  {
+    "company_name": "鐵支涮火鍋",
+    "address": "臺北市大安區和平東路1段141巷6之1號1樓",
+    "registration_number": "A-142842150-00001-5"
+  },
+  {
+    "company_name": "Restaurant Page 頁小館",
+    "address": "臺北市中山區北安路595巷20弄4號1樓",
+    "registration_number": "A-142849652-00001-9"
+  },
+  {
+    "company_name": "橘色涮涮屋火鍋店",
+    "address": "臺北市大安區仁愛路四段29之2號",
+    "registration_number": "A-148763033-00001-3"
+  },
+  {
+    "company_name": "詹記麻辣火鍋-敦南店-詹記麻辣火鍋-敦南店",
+    "address": "臺北市大安區和平東路3段60號",
+    "registration_number": "A-150773753-00001-6"
+  },
+  {
+    "company_name": "狸君-狸君",
+    "address": "臺北市中山區中山北路1段121巷28號1樓",
+    "registration_number": "A-150900028-00001-3"
+  },
+  {
+    "company_name": "台灣小膳香有限公司",
+    "address": "臺北市大安區延吉街62巷11號",
+    "registration_number": "A-150904045-00001-6"
+  },
+  {
+    "company_name": "慕里諾國際股份有限公司-BEPPIN 大直美麗華店",
+    "address": "臺北市中山區敬業三路22號5樓",
+    "registration_number": "A-150906000-00001-9"
+  },
+  {
+    "company_name": "吃味餐廳-露天央廚",
+    "address": "臺北市中山區中山北路2段115巷3弄7號1樓",
+    "registration_number": "A-152474513-00002-1"
+  },
+  {
+    "company_name": "Asylum",
+    "address": "臺北市大安區復興南路１段２１９巷１０號１樓",
+    "registration_number": "A-152603256-00001-8"
+  },
+  {
+    "company_name": "周照子、喫尤、麻煮-喫尤平價鐵板燒",
+    "address": "臺北市中正區汀州路三段247號1樓",
+    "registration_number": "A-152635145-00002-1"
+  },
+  {
+    "company_name": "鼎珍坊有限公司",
+    "address": "臺北市大安區光復南路180巷8號",
+    "registration_number": "A-153762750-00001-4"
+  },
+  {
+    "company_name": "台灣東利多股份有限公司-長田本庄軒3號店 新光南西店",
+    "address": "臺北市中山區南京西路15號 B1",
+    "registration_number": "A-153919541-00078-0"
+  },
+  {
+    "company_name": "江雁塘新時尚鐵板燒-江雁塘新時尚鐵板燒",
+    "address": "臺北市中山區新生北路3段7號",
+    "registration_number": "A-153937013-00000-9"
+  },
+  {
+    "company_name": "馬友友印度廚房-馬友友印度廚房",
+    "address": "臺北市中山區松江路1-1號",
+    "registration_number": "A-153947764-00003-6"
+  },
+  {
+    "company_name": "八方雲集餐飲股份有限公司-御廚石牌明德店",
+    "address": "臺北市北投區明德路107號",
+    "registration_number": "A-154036645-00094-4"
+  },
+  {
+    "company_name": "台灣善商股份有限公司-1009 SUKIYA民權西路",
+    "address": "臺北市中山區民權西路75號1樓",
+    "registration_number": "A-154181892-00212-1"
+  },
+  {
+    "company_name": "OOHCHACHA",
+    "address": "臺北市中正區南昌路2段207號1樓",
+    "registration_number": "A-154361634-00001-1"
+  },
+  {
+    "company_name": "八方雲集國際股份有限公司-台北南海店",
+    "address": "臺北市中正區南海路50之1號",
+    "registration_number": "A-170472679-00136-0"
+  },
+  {
+    "company_name": "GODBeet-很牛炭燒牛排",
+    "address": "臺北市松山區南京東路3段303巷6弄10號1樓",
+    "registration_number": "A-172997047-00001-4"
+  },
+  {
+    "company_name": "維格餅家股份有限公司-維格餅家-成都門市",
+    "address": "臺北市萬華區成都路3號",
+    "registration_number": "A-180490319-00026-0"
+  },
+  {
+    "company_name": "Meat Love-Meat Love",
+    "address": "臺北市中山區敬業三路20號5樓",
+    "registration_number": "A-182813125-00001-9"
+  },
+  {
+    "company_name": "窯昇福股份有限公司-窯昇福國際有限公司西門町營業所",
+    "address": "臺北市萬華區昆明街106號1樓",
+    "registration_number": "A-182913383-00009-4"
+  },
+  {
+    "company_name": "蒜翻天食品有限公司-台北中原店",
+    "address": "臺北市中山區中原街136號",
+    "registration_number": "A-183160299-00006-2"
+  },
+  {
+    "company_name": "Cafe padrino-Cafe padrino",
+    "address": "臺北市松山區光復北路175號1樓",
+    "registration_number": "A-183199560-00001-0"
+  },
+  {
+    "company_name": "固的有限公司",
+    "address": "臺北市中山區農安街153號1樓",
+    "registration_number": "A-183448239-00001-0"
+  },
+  {
+    "company_name": "nul餐酒館",
+    "address": "臺北市大安區復興南路2段160巷22號1樓",
+    "registration_number": "A-185128865-00001-2"
+  },
+  {
+    "company_name": "冠軍商行",
+    "address": "臺北市內湖區民權東路6段56巷35號",
+    "registration_number": "A-188116245-00001-4"
+  },
+  {
+    "company_name": "人从众厚切牛排",
+    "address": "臺北市中山區伊通街55號1樓",
+    "registration_number": "A-188140982-00001-9"
+  },
+  {
+    "company_name": "lulu lin原型飯包",
+    "address": "臺北市中正區忠孝東路2段134巷12號",
+    "registration_number": "A-188207580-00001-7"
+  },
+  {
+    "company_name": "人从众厚切牛排",
+    "address": "臺北市中正區汀州路3段127號1樓",
+    "registration_number": "A-188267806-00001-4"
+  },
+  {
+    "company_name": "令和陸年日式涮涮鍋",
+    "address": "臺北市信義區忠孝東路5段524巷3弄2號1樓",
+    "registration_number": "A-188301591-00001-4"
+  },
+  {
+    "company_name": "大道創意快炒",
+    "address": "臺北市中山區市民大道3段35號1樓",
+    "registration_number": "A-188308671-00001-0"
+  },
+  {
+    "company_name": "VGest低碳披薩-VGest低碳披薩",
+    "address": "臺北市松山區八德路四段658號",
+    "registration_number": "A-189124525-00001-5"
+  },
+  {
+    "company_name": "貴族世家牛排-孫東寶-文山景美店",
+    "address": "臺北市文山區景文街23號",
+    "registration_number": "A-189496779-00157-0"
+  },
+  {
+    "company_name": "威耀時代股份有限公司-威士威酒食超市",
+    "address": "臺北市信義區忠孝東路五段532號",
+    "registration_number": "A-190370708-00005-7"
+  },
+  {
+    "company_name": "樂湖股份有限公司-樂湖股份有限公司",
+    "address": "臺北市內湖區大湖山莊街221號1樓",
+    "registration_number": "A-190875812-00001-9"
+  },
+  {
+    "company_name": "圓濎有限公司",
+    "address": "臺北市大安區基隆路二段128號2樓之2",
+    "registration_number": "A-190878424-00001-1"
+  },
+  {
+    "company_name": "拾伍商行",
+    "address": "臺北市士林區士東路15號1樓",
+    "registration_number": "A-193179395-00001-5"
+  },
+  {
+    "company_name": "優妮兔舒食餐盒",
+    "address": "臺北市中正區紹興北街8號之1",
+    "registration_number": "A-193183399-00000-3"
+  },
+  {
+    "company_name": "青杉燒肉",
+    "address": "臺北市大安區仁愛路4段345巷4弄8號1樓",
+    "registration_number": "A-193368494-00001-5"
+  },
+  {
+    "company_name": "雲鼎阿二麻辣美食",
+    "address": "臺北市中山區伊通街102號1樓",
+    "registration_number": "A-193547552-00001-9"
+  },
+  {
+    "company_name": "十二月粥品",
+    "address": "臺北市松山區南京東路4段45號",
+    "registration_number": "A-193615615-00001-5"
+  },
+  {
+    "company_name": "成都滿庭芳-成都滿庭芳/泰興南洋",
+    "address": "臺北市松山區八德路3段158號1樓",
+    "registration_number": "A-193640516-00003-5"
+  },
+  {
+    "company_name": "椰兄",
+    "address": "臺北市松山區南京東路3段303巷24號",
+    "registration_number": "A-193757450-00001-9"
+  },
+  {
+    "company_name": "烤必勝-烤必勝",
+    "address": "臺北市中正區羅斯福路4段50號2樓之4、之5",
+    "registration_number": "A-194096751-00001-0"
+  },
+  {
+    "company_name": "Peau De Poulet-Peau De Pou",
+    "address": "臺北市大同區南京西路163號2樓之34",
+    "registration_number": "A-196754266-00000-3"
+  },
+  {
+    "company_name": "蘇杭企業股份有限公司-蘇杭濟南店",
+    "address": "臺北市中正區濟南路一段2號之1",
+    "registration_number": "A-197433215-00001-3"
+  },
+  {
+    "company_name": "欣香國際食品有限公司",
+    "address": "臺北市萬華區西藏路478號1樓",
+    "registration_number": "A-197459875-00000-2"
+  },
+  {
+    "company_name": "台灣一品拉麵與刀削麵之家",
+    "address": "臺北市大安區永康街10之6號1樓",
+    "registration_number": "A-199612657-00001-4"
+  },
+  {
+    "company_name": "協盛食品行-協盛食品行",
+    "address": "臺北市萬華區萬大路493巷58弄14號",
+    "registration_number": "A-199981758-00002-6"
+  },
+  {
+    "company_name": "永吉涼麵-永吉涼麵",
+    "address": "臺北市南港區同德路21號1樓",
+    "registration_number": "A-199991138-00001-8"
+  },
+  {
+    "company_name": "宋江小吃店",
+    "address": "臺北市士林區天母北路2號",
+    "registration_number": "A-200005119-00001-6"
+  },
+  {
+    "company_name": "哈囉小吃店-哈囉小吃店",
+    "address": "臺北市萬華區和平西路3段120號(1-3號)",
+    "registration_number": "A-200051632-00001-7"
+  },
+  {
+    "company_name": "豪品時尚料理會館-豪品時尚料理會館",
+    "address": "臺北市中正區市民大道1段100號25.26號店",
+    "registration_number": "A-200061216-00002-7"
+  },
+  {
+    "company_name": "焗工坊-焗工坊",
+    "address": "臺北市中正區市民大道一段100號24.27號",
+    "registration_number": "A-200061217-00002-8"
+  },
+  {
+    "company_name": "香港鳳隆燒臘美食館",
+    "address": "臺北市士林區福華路128巷10號1樓",
+    "registration_number": "A-200068267-00002-0"
+  },
+  {
+    "company_name": "嘉義鮑魚海產粥",
+    "address": "臺北市大同區延平北路三段77號",
+    "registration_number": "A-200074016-00001-8"
+  },
+  {
+    "company_name": "豆味行",
+    "address": "臺北市中正區南昌路1段64號1樓",
+    "registration_number": "A-200081601-00001-6"
+  },
+  {
+    "company_name": "紅磡港式飲茶",
+    "address": "臺北市萬華區中華路一段144號2樓",
+    "registration_number": "A-200096326-00000-5"
+  },
+  {
+    "company_name": "台南滷三塊-台南滷三塊",
+    "address": "臺北市北投區承德路七段100號",
+    "registration_number": "A-200098501-00001-3"
+  },
+  {
+    "company_name": "金仙蝦捲滷肉飯-金仙蝦捲魯肉飯(營登金仙蝦捲小吃店)",
+    "address": "臺北市內湖區東湖路113巷5弄9號1摟",
+    "registration_number": "A-200100637-00002-8"
+  },
+  {
+    "company_name": "富華食品商行",
+    "address": "臺北市中山區民族東路410巷2弄14號1樓",
+    "registration_number": "A-200109770-00000-3"
+  },
+  {
+    "company_name": "秀昌水餃館",
+    "address": "臺北市中正區中華路二段309巷20號",
+    "registration_number": "A-200117303-00001-5"
+  },
+  {
+    "company_name": "老虎醬溫州大餛飩",
+    "address": "臺北市大安區信義路3段109號之2",
+    "registration_number": "A-200118238-00001-3"
+  },
+  {
+    "company_name": "老牌牛肉拉麵大王-老牌牛肉拉麵大王",
+    "address": "臺北市中正區光復里重慶南路１段４６巷７號",
+    "registration_number": "A-200118660-00000-1"
+  },
+  {
+    "company_name": "臺北市華山市場-合掌村1-9-臺北市華山市場-合掌村1-9",
+    "address": "臺北市中正區忠孝東路1段108號",
+    "registration_number": "A-200118931-00001-3"
+  },
+  {
+    "company_name": "老虎醬溫州大餛飩",
+    "address": "臺北市北投區石牌路2段37號1樓",
+    "registration_number": "A-200120977-00001-6"
+  },
+  {
+    "company_name": "蓬萊食堂-蓬萊精緻台菜",
+    "address": "臺北市北投區北投區中和街238號",
+    "registration_number": "A-200121350-00001-2"
+  },
+  {
+    "company_name": "昆陽水煎包",
+    "address": "臺北市南港區昆陽街155號1樓",
+    "registration_number": "A-200122134-00000-2"
+  },
+  {
+    "company_name": "大味王燒烤店-大味王燒烤店",
+    "address": "臺北市萬華區萬大路190號",
+    "registration_number": "A-200123802-00001-6"
+  },
+  {
+    "company_name": "三媽臭臭鍋-三媽臭臭鍋",
+    "address": "臺北市中正區汀州路3段206號",
+    "registration_number": "A-200124443-00001-8"
+  },
+  {
+    "company_name": "盧記上海小吃店",
+    "address": "臺北市中山區民生東路2段115巷5號",
+    "registration_number": "A-200125564-00000-2"
+  },
+  {
+    "company_name": "擱再來小吃-擱再來小吃",
+    "address": "臺北市中正區羅斯福路3段244巷12-1號",
+    "registration_number": "A-200125701-00001-6"
+  },
+  {
+    "company_name": "BON Meingerda & Dumpling-BON Meingerda & Dumpling",
+    "address": "臺北市士林區劍潭路78號",
+    "registration_number": "A-200125704-00001-9"
+  },
+  {
+    "company_name": "山園餐廳-山園餐館",
+    "address": "臺北市北投區竹子湖路55-12號旁",
+    "registration_number": "A-200126613-00001-9"
+  },
+  {
+    "company_name": "長疆炭燒羊肉爐-長疆羊肉爐",
+    "address": "臺北市內湖區舊宗路1段18號",
+    "registration_number": "A-200132479-00000-5"
+  },
+  {
+    "company_name": "鮨處律商行",
+    "address": "臺北市大安區安和路二段155號1樓",
+    "registration_number": "A-200136696-00001-1"
+  },
+  {
+    "company_name": "愛美蔬果滷味-愛美蔬果滷味",
+    "address": "臺北市信義區莊敬路325巷28號",
+    "registration_number": "A-200136869-00001-3"
+  },
+  {
+    "company_name": "山東姥姥麵食館",
+    "address": "臺北市北投區石牌路一段71巷3弄2號1樓",
+    "registration_number": "A-200137661-00001-4"
+  },
+  {
+    "company_name": "新華港式菜館",
+    "address": "臺北市松山區南京東路3段303巷14弄8號1樓",
+    "registration_number": "A-200138505-00001-2"
+  },
+  {
+    "company_name": "欽豪自助餐-欽豪自助餐",
+    "address": "臺北市中山區大直街46巷4號",
+    "registration_number": "A-200143561-00001-0"
+  },
+  {
+    "company_name": "謝老闆雞肉飯",
+    "address": "臺北市松山區南京東路5段291巷8之3號1樓",
+    "registration_number": "A-200145034-00001-7"
+  },
+  {
+    "company_name": "潮辣美食店-潮味決台北瑞安分社(二代店)",
+    "address": "臺北市大安區瑞安街282號",
+    "registration_number": "A-200146219-00001-3"
+  },
+  {
+    "company_name": "同心大腸蚵仔麵線-同心大腸蚵仔麵線",
+    "address": "臺北市中正區同安街16號",
+    "registration_number": "A-200149050-00001-9"
+  },
+  {
+    "company_name": "全家福素食",
+    "address": "臺北市北投區石牌路1段166巷112號",
+    "registration_number": "A-200150236-00001-7"
+  },
+  {
+    "company_name": "鍋in-鍋in",
+    "address": "臺北市中正區汀州路三段196號1樓",
+    "registration_number": "A-200151580-00001-0"
+  },
+  {
+    "company_name": "臺北市士東市場237號攤-臺北市士東市場237號攤",
+    "address": "臺北市士林區士東路100號",
+    "registration_number": "A-200157244-00001-3"
+  },
+  {
+    "company_name": "花田樂",
+    "address": "臺北市信義區林口街31號",
+    "registration_number": "A-200158475-00000-9"
+  },
+  {
+    "company_name": "吃韓餐飲舖",
+    "address": "臺北市士林區天母西路3-1號",
+    "registration_number": "A-200162538-00001-5"
+  },
+  {
+    "company_name": "梧貳WUERFOODS-梧貳 WURE FOODS",
+    "address": "臺北市大安區和平東路二段311巷7號",
+    "registration_number": "A-200164824-00001-5"
+  },
+  {
+    "company_name": "民生永康自助餐",
+    "address": "臺北市大同區民生西路90號1樓",
+    "registration_number": "A-200164958-00001-3"
+  },
+  {
+    "company_name": "赤綠taiwanippon",
+    "address": "臺北市大安區復興南路1段107巷5弄15號地下室",
+    "registration_number": "A-200164972-00000-8"
+  },
+  {
+    "company_name": "德記麻辣鴨血-德記麻辣鴨血",
+    "address": "臺北市中正區羅斯福路4段52巷16弄4號",
+    "registration_number": "A-200165660-00001-4"
+  },
+  {
+    "company_name": "星島海南雞飯-星島海南雞飯(龍江店)",
+    "address": "臺北市中山區龍江路356巷7號",
+    "registration_number": "A-200165673-00002-9"
+  },
+  {
+    "company_name": "大嗑西式餐館",
+    "address": "臺北市中正區濟南路2段18之3號",
+    "registration_number": "A-200171344-00001-0"
+  },
+  {
+    "company_name": "蜀留香正宗重慶手工酸辣粉",
+    "address": "臺北市中山區民權東路2段92巷1弄6號",
+    "registration_number": "A-200173753-00001-6"
+  },
+  {
+    "company_name": "莊林素月",
+    "address": "臺北市萬華區寶興街75號",
+    "registration_number": "A-200174162-00001-1"
+  },
+  {
+    "company_name": "莉山菲律賓料理-莉山菲律賓料理",
+    "address": "臺北市中山區雙城街43巷17號一樓",
+    "registration_number": "A-200194642-00001-6"
+  },
+  {
+    "company_name": "噗嚨哄熱炒-噗嚨哄熱炒",
+    "address": "臺北市大安區光復南路456巷21號",
+    "registration_number": "A-200195601-00001-2"
+  },
+  {
+    "company_name": "香頌私宅-香頌私宅",
+    "address": "臺北市中山區建國北路2段52號",
+    "registration_number": "A-200195784-00001-4"
+  },
+  {
+    "company_name": "蔡老師蔬食民生店-蔡老師蔬食民生店",
+    "address": "臺北市松山區富錦街581巷24號1樓",
+    "registration_number": "A-200197122-00001-2"
+  },
+  {
+    "company_name": "印尼料理自助式-印尼料理自助式",
+    "address": "臺北市中正區市民大道1段100號地下1層輕食1區8號",
+    "registration_number": "A-200200427-00001-5"
+  },
+  {
+    "company_name": "欣宜快餐店",
+    "address": "臺北市信義區吳興街５號",
+    "registration_number": "A-200207762-00000-3"
+  },
+  {
+    "company_name": "天母臭臭鍋",
+    "address": "臺北市士林區德行東路37號",
+    "registration_number": "A-200212076-00000-7"
+  },
+  {
+    "company_name": "江浙知味村",
+    "address": "臺北市信義區吳興街156巷5號之一",
+    "registration_number": "A-200213067-00001-9"
+  },
+  {
+    "company_name": "馬克與鐵鍋",
+    "address": "臺北市松山區南京東路四段75巷14弄3號",
+    "registration_number": "A-200215794-00001-8"
+  },
+  {
+    "company_name": "温咖哩小吃店-温咖哩小吃店",
+    "address": "臺北市中正區濟南路2段3號之8一樓",
+    "registration_number": "A-200220407-00001-5"
+  },
+  {
+    "company_name": "圈粉砂鍋粥店",
+    "address": "臺北市中山區八德路二段312巷3號",
+    "registration_number": "A-200223353-00001-8"
+  },
+  {
+    "company_name": "真好味茶餐廳",
+    "address": "臺北市大安區忠孝東路4段170巷29號1樓",
+    "registration_number": "A-200223792-00001-5"
+  },
+  {
+    "company_name": "北投中繼市場434號攤-北投中繼市場434號攤",
+    "address": "臺北市北投區磺港路33號",
+    "registration_number": "A-200235891-00001-8"
+  },
+  {
+    "company_name": "池上飯包 信義店",
+    "address": "臺北市信義區吳興街500巷2號1樓",
+    "registration_number": "A-200237976-00001-4"
+  },
+  {
+    "company_name": "華西街臨時攤販集中場-臭屁大叔-華西街臨時攤販集中場-臭屁大叔",
+    "address": "臺北市萬華區華西街40-1號166號攤",
+    "registration_number": "A-200238622-00001-3"
+  },
+  {
+    "company_name": "戰醬燒肉",
+    "address": "臺北市松山區市民大道4段157號",
+    "registration_number": "A-200240120-00001-9"
+  },
+  {
+    "company_name": "牛王子牛排店-牛王子牛排店+",
+    "address": "臺北市北投區新市街75號",
+    "registration_number": "A-200246348-00001-7"
+  },
+  {
+    "company_name": "紅心台越料理",
+    "address": "臺北市北投區明德路265號1樓",
+    "registration_number": "A-200248369-00001-2"
+  },
+  {
+    "company_name": "麵匡匡捷運景美店-麵匡匡捷運景美店",
+    "address": "臺北市文山區景文街21號1樓",
+    "registration_number": "A-200250490-00001-0"
+  },
+  {
+    "company_name": "京畿道韓式料理-京畿道韓式料理",
+    "address": "臺北市中正區延平南路216巷2號",
+    "registration_number": "A-200252909-00001-7"
+  },
+  {
+    "company_name": "廣嘟燒臘",
+    "address": "臺北市內湖區金龍路39號1樓",
+    "registration_number": "A-200255221-00001-7"
+  },
+  {
+    "company_name": "奶油猴子豆漿食品店",
+    "address": "臺北市士林區天母東路8巷41弄2號",
+    "registration_number": "A-202257062-00001-4"
+  },
+  {
+    "company_name": "洪家豆漿店",
+    "address": "臺北市中山區農安街202之1號1樓",
+    "registration_number": "A-202257420-00001-2"
+  },
+  {
+    "company_name": "米寶寶海苔飯捲專賣店",
+    "address": "臺北市大安區臺北市大安區復興南路一段62號",
+    "registration_number": "A-202266461-00000-6"
+  },
+  {
+    "company_name": "弎刃商號-湮鯱",
+    "address": "臺北市大安區市民大道3段302號1樓",
+    "registration_number": "A-202268373-00001-1"
+  },
+  {
+    "company_name": "有人煮麵泡麵製研所-有人煮麵泡麵製研所",
+    "address": "臺北市中正區南陽街56號",
+    "registration_number": "A-202268660-00001-0"
+  },
+  {
+    "company_name": "享之饌虱目魚-享之饌虱目魚",
+    "address": "臺北市中正區八德路1段82巷9弄12號1樓",
+    "registration_number": "A-202270153-00001-0"
+  },
+  {
+    "company_name": "臨江夜市-五哥肉夾饃-臨江夜市-五哥肉夾饃",
+    "address": "臺北市大安區臨江街54號",
+    "registration_number": "A-202270568-00001-0"
+  },
+  {
+    "company_name": "1976道地香港美食",
+    "address": "臺北市大安區敦化南路1段233巷11號1樓（1976）",
+    "registration_number": "A-202275642-00001-8"
+  },
+  {
+    "company_name": "來了就吃小吃店",
+    "address": "臺北市大安區金山南路2段85巷7號1樓",
+    "registration_number": "A-202279882-00001-8"
+  },
+  {
+    "company_name": "一脆-一脆",
+    "address": "臺北市萬華區西門里成都路６１號",
+    "registration_number": "A-202290129-00000-4"
+  },
+  {
+    "company_name": "泰圓泰式料理小吃店",
+    "address": "臺北市北投區裕民三路9號1樓",
+    "registration_number": "A-202293040-00001-0"
+  },
+  {
+    "company_name": "不老林生機飲食有限公司-不老林生機飲食有限公司",
+    "address": "臺北市萬華區西園路1段145號（龍山寺地下街商場12號店舖）",
+    "registration_number": "A-202294075-00001-9"
+  },
+  {
+    "company_name": "磺溪小鎮-磺溪小鎮",
+    "address": "臺北市北投區石牌路2段360號1樓",
+    "registration_number": "A-202295346-00001-1"
+  },
+  {
+    "company_name": "Affair Bistro",
+    "address": "臺北市信義區基隆路2段39巷33號1樓",
+    "registration_number": "A-202297867-00001-1"
+  },
+  {
+    "company_name": "南岭精緻麵館-南岭精緻麵館",
+    "address": "臺北市松山區光復北路11巷62號",
+    "registration_number": "A-202298050-00001-6"
+  },
+  {
+    "company_name": "香味-香味",
+    "address": "臺北市萬華區萬壽里西寧南路９９巷３號",
+    "registration_number": "A-202305356-00001-4"
+  },
+  {
+    "company_name": "A-bao",
+    "address": "臺北市松山區撫遠街337號1樓",
+    "registration_number": "A-202308082-00000-2"
+  },
+  {
+    "company_name": "紅門宴七辣四川酸辣粉",
+    "address": "臺北市大安區羅斯福路3段171號1樓",
+    "registration_number": "A-202308954-00001-1"
+  },
+  {
+    "company_name": "天天烤肉飯",
+    "address": "臺北市信義區三張里莊敬路359號1樓",
+    "registration_number": "A-202310508-00001-9"
+  },
+  {
+    "company_name": "潼 精緻鐵板料理 故宮店-潼 精緻鐵板料理故宮店",
+    "address": "臺北市士林區至善路2段485號旁",
+    "registration_number": "A-202311755-00001-4"
+  },
+  {
+    "company_name": "Well RICE好飯",
+    "address": "臺北市士林區111臺北市士林區基河路382號11樓（11A2)",
+    "registration_number": "A-202314861-00000-4"
+  },
+  {
+    "company_name": "稻穗輕食-稻穗輕食",
+    "address": "臺北市大安區復興南路一段122巷10-6號",
+    "registration_number": "A-202316233-00001-0"
+  },
+  {
+    "company_name": "關記XO干貝醬",
+    "address": "臺北市中山區民生西路30號",
+    "registration_number": "A-202317250-00001-0"
+  },
+  {
+    "company_name": "新四海豆漿大王-新四海豆漿大王",
+    "address": "臺北市文山區木柵路2段82號",
+    "registration_number": "A-278963266-00001-7"
+  },
+  {
+    "company_name": "同安街小哥麵線羹",
+    "address": "臺北市中正區廈門街84號",
+    "registration_number": "A-278963684-00001-1"
+  },
+  {
+    "company_name": "環南市場-蔬菜107號-不貽樣湯包排骨酥",
+    "address": "臺北市信義區松德路255號",
+    "registration_number": "A-278966137-00001-7"
+  },
+  {
+    "company_name": "台北得力水餃王",
+    "address": "臺北市信義區景新里莊敬路３２５巷１９號１樓",
+    "registration_number": "A-278966859-00001-8"
+  },
+  {
+    "company_name": "墨式小吃-墨式小吃",
+    "address": "臺北市大安區忠孝東路4段216巷11弄20號1樓",
+    "registration_number": "F-202288609-00001-0"
   }
 ]
