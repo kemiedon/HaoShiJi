@@ -138,19 +138,34 @@ def search_restaurants():
             extra_info = f" ({', '.join(extras)})" if extras else ""
             print(f"  - {place['name']}: {review_count} 則評論 → {level}{extra_info}")
 
-        # 步驟 7: 依風險等級排序（推薦順序：官方認證 > 低風險 > 注意 > 稽查不合格）
-        level_order = {
-            SafetyLevel.CERTIFIED.value: 0,
-            SafetyLevel.LOW_RISK.value: 1,
-            SafetyLevel.CAUTION.value: 2,
-            SafetyLevel.INSPECTION.value: 3,
-        }
-        analyzed_places.sort(
-            key=lambda x: (
-                level_order[x["safety_analysis"]["level"]],
-                -x.get("rating", 0),  # 同等級內依 Google 評分排序
+        # 步驟 7: 依風險等級排序
+        # 排序邏輯：
+        # 1. 稽查不合格優先排在最後（警示用）
+        # 2. 其次按風險等級：低風險 > 注意
+        # 3. 官方認證在同風險等級內優先顯示
+        # 4. 同等級內依 Google 評分排序
+        def sort_key(restaurant):
+            analysis = restaurant["safety_analysis"]
+            level = analysis["level"]
+            has_certification = analysis.get("official_certification") is not None
+            has_inspection_failed = analysis.get("inspection_status") is not None
+            rating = restaurant.get("rating", 0)
+
+            # 風險等級排序（數字越小越優先）
+            level_order = {
+                SafetyLevel.LOW_RISK.value: 0,
+                SafetyLevel.CAUTION.value: 1,
+            }
+
+            # 排序優先級
+            return (
+                1 if has_inspection_failed else 0,  # 稽查不合格排最後
+                level_order.get(level, 999),         # 風險等級
+                0 if has_certification else 1,       # 官方認證優先
+                -rating                              # Google 評分高的優先
             )
-        )
+
+        analyzed_places.sort(key=sort_key)
 
         # 步驟 8: 回傳結果
         return jsonify(

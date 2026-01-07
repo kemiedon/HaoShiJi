@@ -1,20 +1,28 @@
 """
-food_safety_classifier.py
+api/classifier.py
 食品安全風險分級模組（整合官方評核資料）
 
 功能：
-1. 分析 Google Places 評論中的食安風險關鍵字
+1. 分析 Google Places 評論中的食安風險關鍵字（5 大分類）
 2. 比對台北市政府餐飲衛生管理分級評核資料（僅限「優」等級）
 3. 比對食品稽查結果不合格資料
 4. 輸出整合後的風險分級報告
 
-使用方式：
-    python food_safety_classifier.py
+風險等級：
+    - 注意：評論中有任何風險關鍵字（症狀/品質缺陷/未煮熟/異物/環境/生食）
+    - 無/低風險：無風險關鍵字
+
+獨立標籤：
+    - 官方認證優：台北市餐飲衛生評核「優」等級
+    - 稽核未通過：食品稽查不合格紀錄
+
+使用方式（CLI）：
+    python -m api.classifier
 
 輸入檔案：
     - data/raw/places_with_reviews.json（爬蟲資料）
     - data/external/certified_restaurants.csv（官方評核資料）
-    - data/external/food_business_data.json（稽查資料）
+    - scraper/food_business_data.json（稽查資料）
 
 輸出檔案：
     - data/processed/safety_classified.json
@@ -43,56 +51,32 @@ class SafetyLevel(Enum):
 # 1. 負面症狀、感官異狀與物理危害（吃了出問題 / User 負面體感回饋）
 SYMPTOM_KEYWORDS = [
     # 急性病徵
-    "發燒",
-    "虛弱",
-    "頭暈",
-    "冒冷汗",
-    "肌肉酸痛",
-    "發冷",
-    "嘔吐",
-    "噁心",
-    "胃痙攣",
-    "上吐下瀉",
-    "拉肚子",
-    "腹瀉",
-    "肚子痛",
-    "狂拉",
-    "狂瀉",
-    "跑廁所",
-    "腹絞痛",
-    "紅疹",
-    "過敏",
-    "看醫生",
-    "掛急診",
-    "腸胃炎",
-    "食物中毒",
+    "發燒", "虛弱", "頭暈", "冒冷汗", "肌肉酸痛", "發冷",
+    "嘔吐", "噁心", "胃痙攣", "上吐下瀉",
+    "拉肚子", "腹瀉", "肚子痛", "狂拉", "狂瀉", "跑廁所", "腹絞痛",
+    "紅疹", "過敏",
+    "看醫生", "掛急診", "腸胃炎", "食物中毒",
+]
+
+FOOD_QUALITY_DEFECT = [
     # 感官異狀 (嗅覺/味覺)
-    "不新鮮",
-    "臭掉",
-    "壞掉",
-    "發霉",
-    "有異味",
-    "臭酸味",
-    "酸臭",
-    "藥水味",
-    "漂白水味",
-    "土味",
-    "油耗味",
-    "腐敗",
-    # 物理性與口感異常 (觸覺/視覺)
-    "沒熟",
-    "沒煮熟",
-    "血水",
-    "吃到頭髮",
-    "吃到蟑螂",
-    "有蟲",
-    "碎玻璃",
-    "鋼刷絲",
-    "異物",
-    "塑膠片",
+    "不新鮮", "臭掉", "壞掉", "發霉", "有異味", "臭酸味", "酸臭",
+    "藥水味", "漂白水味", "土味", "油耗味", "腐敗", "腥味", "腥臭",
+    "塑膠味", "化學味", "變質", "怪味",
+]
+
+UNDERCOOKED = [
+    "沒熟", "沒煮熟", "血水", "生味", "太生",
+]
+
+FOREIGN_BODY = [
+    "吃到頭髮", "吃到蟑螂", "有蟲",
+    "碎玻璃", "鋼刷絲", "異物", "塑膠片",
+]
+
+ENVIRONMENT = [
     # 環境問題
-    "衛生問題",
-    "環境髒亂",
+    "衛生問題", "環境髒亂", "廁所臭", "廁所髒", "霉味",
 ]
 
 # 2. 高風險料理關鍵字（成品、菜名類）
@@ -307,13 +291,37 @@ def classify_review(review_text: str) -> Dict[str, Any]:
 
     text = review_text.lower()
     matched = []
-
-    # 檢查負面症狀
     has_symptoms = False
+
+    # 檢查急性病徵
     for keyword in SYMPTOM_KEYWORDS:
         if keyword in text:
             has_symptoms = True
             matched.append(f"症狀:{keyword}")
+
+    # 檢查食品品質缺陷
+    for keyword in FOOD_QUALITY_DEFECT:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"品質缺陷:{keyword}")
+
+    # 檢查未煮熟
+    for keyword in UNDERCOOKED:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"未煮熟:{keyword}")
+
+    # 檢查異物
+    for keyword in FOREIGN_BODY:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"異物:{keyword}")
+
+    # 檢查環境問題
+    for keyword in ENVIRONMENT:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"環境:{keyword}")
 
     # 檢查生食關鍵字
     has_raw_food = False
@@ -383,13 +391,10 @@ def classify_restaurant(
 
         all_matched_keywords.extend(result["matched_keywords"])
 
-    # 判定風險等級
-    # 優先級：稽查不合格 > 官方認證 > 有關鍵字（注意） > 無關鍵字
-    if inspection_failed:
-        level = SafetyLevel.INSPECTION
-    elif certification:
-        level = SafetyLevel.CERTIFIED
-    elif symptom_count > 0 or raw_food_count > 0:
+    # 判定風險等級（僅基於評論內容）
+    # 優先級：有關鍵字（注意） > 無關鍵字（低風險）
+    # 官方認證和稽查不合格作為獨立標籤，不影響風險等級
+    if symptom_count > 0 or raw_food_count > 0:
         # 有任何關鍵字提及（症狀、生食等）→ 標示為注意
         level = SafetyLevel.CAUTION
     else:
@@ -494,20 +499,34 @@ def process_all_restaurants(
         if i % 10 == 0 or i == len(restaurants):
             print(f"   進度: {i}/{len(restaurants)}")
 
-    # Step 4: 排序（推薦順序：官方認證 > 低風險 > 中風險 > 高風險 > 稽查不合格）
-    level_order = {
-        SafetyLevel.CERTIFIED.value: 0,
-        SafetyLevel.LOW_RISK.value: 1,
-        SafetyLevel.MEDIUM_RISK.value: 2,
-        SafetyLevel.HIGH_RISK.value: 3,
-        SafetyLevel.INSPECTION.value: 4,
-    }
-    classified.sort(
-        key=lambda x: (
-            level_order[x["safety_analysis"]["level"]],
-            -x.get("rating", 0),  # 同等級內依 Google 評分排序
+    # Step 4: 排序
+    # 排序邏輯：
+    # 1. 稽查不合格優先排在最後（警示用）
+    # 2. 其次按風險等級：低風險 > 注意
+    # 3. 官方認證在同風險等級內優先顯示
+    # 4. 同等級內依 Google 評分排序
+    def sort_key(restaurant):
+        analysis = restaurant["safety_analysis"]
+        level = analysis["level"]
+        has_certification = analysis.get("official_certification") is not None
+        has_inspection_failed = analysis.get("inspection_status") is not None
+        rating = restaurant.get("rating", 0)
+
+        # 風險等級排序（數字越小越優先）
+        level_order = {
+            SafetyLevel.LOW_RISK.value: 0,
+            SafetyLevel.CAUTION.value: 1,
+        }
+
+        # 排序優先級
+        return (
+            1 if has_inspection_failed else 0,  # 稽查不合格排最後
+            level_order.get(level, 999),         # 風險等級
+            0 if has_certification else 1,       # 官方認證優先
+            -rating                              # Google 評分高的優先
         )
-    )
+
+    classified.sort(key=sort_key)
 
     # Step 5: 儲存結果
     print(f"\n Step 4: 儲存分類結果...")
@@ -521,48 +540,63 @@ def process_all_restaurants(
     print("分類結果摘要")
     print("=" * 50)
 
+    # 統計風險等級
+    print("\n【風險等級分布】")
     level_emoji = {
-        "官方認證優": "✅",
         "無/低風險": "🟢",
-        "中風險": "🟡",
-        "高風險": "🔴",
-        "稽核未通過": "⛔",
+        "注意": "🟡",
     }
 
-    for level in SafetyLevel:
-        count = sum(
-            1 for r in classified if r["safety_analysis"]["level"] == level.value
-        )
-        emoji = level_emoji.get(level.value, "")
-        print(f"   {emoji} {level.value}: {count} 家")
+    # 只統計兩個風險等級
+    for level_value in [SafetyLevel.LOW_RISK.value, SafetyLevel.CAUTION.value]:
+        count = sum(1 for r in classified if r["safety_analysis"]["level"] == level_value)
+        emoji = level_emoji.get(level_value, "")
+        print(f"   {emoji} {level_value}: {count} 家")
+
+    # 統計官方認證和稽查不合格（獨立標籤）
+    print("\n【獨立標籤統計】")
+    certified_count = sum(1 for r in classified if r["safety_analysis"].get("official_certification") is not None)
+    inspection_failed_count = sum(1 for r in classified if r["safety_analysis"].get("inspection_status") is not None)
+    print(f"   ✅ 官方認證優: {certified_count} 家")
+    print(f"   ⛔ 稽核未通過: {inspection_failed_count} 家")
 
     # 稽查不合格餐廳詳情
-    inspection_failed = [
-        r for r in classified if r["safety_analysis"]["level"] == "稽核未通過"
-    ]
+    inspection_failed = [r for r in classified if r["safety_analysis"].get("inspection_status") is not None]
     if inspection_failed:
         print("\n⛔ 稽查不合格餐廳警示：")
         for r in inspection_failed:
             name = r.get("name", "未知")
+            level = r["safety_analysis"]["level"]
             inspection_info = r["safety_analysis"].get("inspection_status", {})
-            print(f"   - {name}")
+            print(f"   - {name} ({level})")
             if inspection_info:
-                print(
-                    f"     登錄字號: {inspection_info.get('registration_number', 'N/A')}"
-                )
+                print(f"     登錄字號: {inspection_info.get('registration_number', 'N/A')}")
 
-    # 高風險餐廳詳情
-    high_risk = [r for r in classified if r["safety_analysis"]["level"] == "高風險"]
-    if high_risk:
-        print("\n🔴 高風險餐廳警示：")
-        for r in high_risk:
+    # 注意等級餐廳詳情
+    caution_list = [r for r in classified if r["safety_analysis"]["level"] == "注意"]
+    if caution_list:
+        print("\n🟡 注意等級餐廳警示：")
+        for r in caution_list:
             name = r.get("name", "未知")
             keywords = r["safety_analysis"]["matched_keywords"]
-            symptom_keywords = [
-                k.replace("症狀:", "") for k in keywords if k.startswith("症狀:")
-            ]
+
+            # 分類顯示各種關鍵字
+            all_risk_keywords = []
+            for k in keywords:
+                if k.startswith("症狀:"):
+                    all_risk_keywords.append(k.replace("症狀:", ""))
+                elif k.startswith("品質缺陷:"):
+                    all_risk_keywords.append(k.replace("品質缺陷:", ""))
+                elif k.startswith("未煮熟:"):
+                    all_risk_keywords.append(k.replace("未煮熟:", ""))
+                elif k.startswith("異物:"):
+                    all_risk_keywords.append(k.replace("異物:", ""))
+                elif k.startswith("環境:"):
+                    all_risk_keywords.append(k.replace("環境:", ""))
+
             print(f"   - {name}")
-            print(f"     關鍵字: {', '.join(symptom_keywords)}")
+            if all_risk_keywords:
+                print(f"     關鍵字: {', '.join(all_risk_keywords)}")
 
     print("\n" + "=" * 50)
     print(f" 完整結果已儲存至: {output_path}")

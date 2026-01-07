@@ -179,7 +179,7 @@
       }
     ],
     "safety_analysis": {
-      "level": "中風險",
+      "level": "注意",
       "symptom_mentions": 0,
       "raw_food_mentions": 1,
       "matched_keywords": [
@@ -227,7 +227,7 @@
       }
     ],
     "safety_analysis": {
-      "level": "中風險",
+      "level": "注意",
       "symptom_mentions": 0,
       "raw_food_mentions": 1,
       "matched_keywords": [
