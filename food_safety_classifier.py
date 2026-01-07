@@ -47,17 +47,25 @@ SYMPTOM_KEYWORDS = [
     "拉肚子", "腹瀉", "肚子痛", "狂拉", "狂瀉", "跑廁所", "腹絞痛",
     "紅疹", "過敏",
     "看醫生", "掛急診", "腸胃炎", "食物中毒", 
-    
+]  
+FOOD_QUALITY_DEFECT = [
     # 感官異狀 (嗅覺/味覺)
     "不新鮮", "臭掉", "壞掉", "發霉", "有異味", "臭酸味", "酸臭", 
-    "藥水味", "漂白水味", "土味", "油耗味", "腐敗",
-    
-    # 物理性與口感異常 (觸覺/視覺)
-    "沒熟", "沒煮熟", "血水", "吃到頭髮", "吃到蟑螂", "有蟲", 
-    "碎玻璃", "鋼刷絲", "異物", "塑膠片", 
+    "藥水味", "漂白水味", "土味", "油耗味", "腐敗", "腥味", "腥臭",
+    "塑膠味", "化學味", "變質", "怪味", 
+]
+UNDERCOOKED =[
+    "沒熟", "沒煮熟", "血水", "生味", "太生",
+]
 
+FOREIGN_BODY =[
+    "吃到頭髮", "吃到蟑螂", "有蟲", 
+    "碎玻璃", "鋼刷絲", "異物", "塑膠片", 
+]
+
+ENVIRONMENT = [
     # 環境問題
-    "衛生問題", "環境髒亂"
+    "衛生問題", "環境髒亂", "廁所臭", "廁所髒", "霉味",
 ]
 
 # 2. 高風險料理關鍵字（成品、菜名類）
@@ -255,21 +263,45 @@ def classify_review(review_text: str) -> Dict[str, Any]:
     
     text = review_text.lower()
     matched = []
-    
-    # 檢查負面症狀
     has_symptoms = False
+
+    # 檢查急性病徵
     for keyword in SYMPTOM_KEYWORDS:
         if keyword in text:
             has_symptoms = True
             matched.append(f"症狀:{keyword}")
-    
+
+    # 檢查食品品質缺陷
+    for keyword in FOOD_QUALITY_DEFECT:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"品質缺陷:{keyword}")
+
+    # 檢查未煮熟
+    for keyword in UNDERCOOKED:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"未煮熟:{keyword}")
+
+    # 檢查異物
+    for keyword in FOREIGN_BODY:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"異物:{keyword}")
+
+    # 檢查環境問題
+    for keyword in ENVIRONMENT:
+        if keyword in text:
+            has_symptoms = True
+            matched.append(f"環境:{keyword}")
+
     # 檢查生食關鍵字
     has_raw_food = False
     for keyword in DISH_KEYWORDS:
         if keyword in text:
             has_raw_food = True
             matched.append(f"生食:{keyword}")
-    
+
     return {
         "has_symptoms": has_symptoms,
         "has_raw_food": has_raw_food,
@@ -518,9 +550,24 @@ def process_all_restaurants(
         for r in high_risk:
             name = r.get("name", "未知")
             keywords = r["safety_analysis"]["matched_keywords"]
-            symptom_keywords = [k.replace("症狀:", "") for k in keywords if k.startswith("症狀:")]
+
+            # 分類顯示各種關鍵字
+            all_risk_keywords = []
+            for k in keywords:
+                if k.startswith("症狀:"):
+                    all_risk_keywords.append(k.replace("症狀:", ""))
+                elif k.startswith("品質缺陷:"):
+                    all_risk_keywords.append(k.replace("品質缺陷:", ""))
+                elif k.startswith("未煮熟:"):
+                    all_risk_keywords.append(k.replace("未煮熟:", ""))
+                elif k.startswith("異物:"):
+                    all_risk_keywords.append(k.replace("異物:", ""))
+                elif k.startswith("環境:"):
+                    all_risk_keywords.append(k.replace("環境:", ""))
+
             print(f"   - {name}")
-            print(f"     關鍵字: {', '.join(symptom_keywords)}")
+            if all_risk_keywords:
+                print(f"     關鍵字: {', '.join(all_risk_keywords)}")
     
     print("\n" + "=" * 50)
     print(f" 完整結果已儲存至: {output_path}")
